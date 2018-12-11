@@ -42,11 +42,10 @@ class PipelineJob( Resource ):
             return { "Response": generator.test() }
 
         if( job_id == "dagtest" ):
-            #try:
-            #    generator.generate( request.form["data"] )
-            #except:
-            #    return { "Response": "Generation failed." }
-            generator.generate( request.form["data"] )
+            try:
+               generator.generate( request.form["data"] )
+            except:
+               return { "Response": "Generation failed." }
 
             return { "Response": "Generation successful." }
 

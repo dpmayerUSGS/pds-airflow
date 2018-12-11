@@ -73,6 +73,11 @@ class DAGObject:
 
 
 # Generates the string for a DAG file from given list of DAG objects
+# TODO: Generate full dag for all included images
+# TODO: Move dag string
+# TODO: Move start object to object generation
+# TODO: Format dag, e.g. put spaces between parentheses
+# TODO: Place name of dag in dag
 def generate_dag( dag_objects ):
 
     dag_string = '''from airflow import DAG
@@ -111,6 +116,7 @@ start = BashOperator(
     return dag_string
 
 
+# DEPRECATED
 # Gets a list of DAG objects from a json file containing UI output, using filename
 def get_commands_from_filename( recipe_filename ):
 
@@ -125,24 +131,15 @@ def get_commands_from_filename( recipe_filename ):
         dag_objects = []
 
         for task in tasks:
-            # print( task[0], end=" " )
             commands.append( CommandObject( task[0], task[1] ) )
-            # for parameter in task[1]:
-                # print( parameter[0] + "=" + parameter[1], end=" " )
-            # print()
 
         for command in commands:
-            # print( command )
             dag_objects.append( DAGObject( command ) )
-
-        # print( "\n\n" )
-
-        # for dag_object in dag_objects:
-        #     print( dag_object )
 
         return dag_objects
 
 
+# DEPRECATED
 # Gets a list of DAG objects from a json file containing UI output, using file
 def get_commands_from_file( recipe_file ):
 
@@ -156,20 +153,10 @@ def get_commands_from_file( recipe_file ):
     dag_objects = []
 
     for task in tasks:
-        # print( task[0], end=" " )
         commands.append( CommandObject( task[0], task[1] ) )
-        # for parameter in task[1]:
-            # print( parameter[0] + "=" + parameter[1], end=" " )
-        # print()
 
     for command in commands:
-        # print( command )
         dag_objects.append( DAGObject( command ) )
-
-    # print( "\n\n" )
-
-    # for dag_object in dag_objects:
-    #     print( dag_object )
 
     return dag_objects
 
@@ -187,20 +174,10 @@ def get_commands_from_json( recipe_string ):
     dag_objects = []
 
     for task in tasks:
-        # print( task[0], end=" " )
         commands.append( CommandObject( task[0], task[1] ) )
-        # for parameter in task[1]:
-            # print( parameter[0] + "=" + parameter[1], end=" " )
-        # print()
 
     for command in commands:
-        # print( command )
         dag_objects.append( DAGObject( command ) )
-
-    # print( "\n\n" )
-
-    # for dag_object in dag_objects:
-    #     print( dag_object )
 
     return dag_objects
 
