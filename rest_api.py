@@ -5,6 +5,7 @@
 
 import generator
 import os
+import json
 
 from flask import Flask, request
 from flask_restful import Resource, Api
@@ -44,7 +45,7 @@ class PipelineJob( Resource ):
 
         if( job_id == "dagtest" ):
             try:
-                generator.generate( request.json )
+                generator.generate( json.loads( request.data ) )
             except:
                 print( "Generation: failed." )
                 return { "Response": "Generation failed." }

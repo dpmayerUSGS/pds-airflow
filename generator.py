@@ -195,7 +195,7 @@ def generate( data ):
 
 # Tests generator library import
 def test():
-    
+
     return "Test successful response."
 
 
