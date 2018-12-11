@@ -4,6 +4,7 @@
 
 
 import generator
+import os
 
 from flask import Flask, request
 from flask_restful import Resource, Api
@@ -34,18 +35,19 @@ class PipelineJob( Resource ):
 
         if( job_id == "test" ):
             try:
-                with open( DAG_DIRECTORY + "test_file.py", "w" ) as test_file:
-                    test_file.write( "test" )
+                print( generator.test() )
             except:
+                print( "Test failed." )
                 return { "Response": "Test failed." }
 
             return { "Response": generator.test() }
 
         if( job_id == "dagtest" ):
             try:
-               generator.generate( request.form["data"] )
+                generator.generate( request.json )
             except:
-               return { "Response": "Generation failed." }
+                print( "Generation: failed." )
+                return { "Response": "Generation failed." }
 
             return { "Response": "Generation successful." }
 
@@ -62,4 +64,14 @@ api.add_resource( PipelineJob, "/<string:job_id>" )
 
 
 if( __name__ == "__main__" ):
+
+    directory = os.getcwd()
+    if ( "\\" in directory ):
+        directory += "\\dags"
+    else:
+        directory += "/dags"
+
+    if( not os.path.exists( directory ) ):
+        os.makedirs( directory )
+
     api_app.run( port=REST_API_PORT, debug=True )
