@@ -30,8 +30,15 @@ ui_app = Flask( __name__ + "_ui" )
 
 @ui_app.route( "/" )
 def hello_world():
+    with open( "ui.html", "r" ) as html:
+        return html.read()
 
-    return "Hello, World."
+
+@ui_app.route( "/background_process_test" )
+def background_process_test():
+
+    print( "Test" )
+    return "Test successful."
 
 
 # Sends a simple test
