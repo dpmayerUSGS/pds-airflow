@@ -1,20 +1,149 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type=text/javascript>
-        $(function() {
-          $('a#test').bind('click', function() {
-            $.getJSON('/background_process_test',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
+    var mro_images = [];
+    var gssi_images = [];
+
+    $(function() {
+        $("#mission").submit( function( e ) {
+
+            e.preventDefault();
+
+            var mission = $(this).serializeArray()[0]["value"];
+
+            if( mission == "mro" ) {
+                $("#job").html(' \
+                    <input type="checkbox" name="mroctx2isis!check" checked> \
+                    mroctx2isis \
+                    from_ \
+                    <input type="text" name="mroctx2isis!from_" value="default"> \
+                    to \
+                    <input type="text" name="mroctx2isis!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="spiceinit!check" checked> \
+                    spiceinit \
+                    from_ \
+                    <input type="text" name="spiceinit!from_" value="default"> \
+                    cknadir \
+                    <input type="text" name="spiceinit!cknadir" value="default"> \
+                    cksmithed \
+                    <input type="text" name="spiceinit!cksmithed" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="ctxcal!check" checked> \
+                    ctxcal \
+                    from_ \
+                    <input type="text" name="ctxcal!from_" value="default"> \
+                    to \
+                    <input type="text" name="ctxcal!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="ctxevenodd!check" checked> \
+                    ctxevenodd \
+                    from_ \
+                    <input type="text" name="ctxevenodd!from_" value="default"> \
+                    to \
+                    <input type="text" name="ctxevenodd!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="cam2map!check" checked> \
+                    cam2map \
+                    from \
+                    <input type="text" name="cam2map!from" value="default"> \
+                    to \
+                    <input type="text" name="cam2map!to" value="default"> \
+                    map \
+                    <input type="text" name="cam2map!map" value="default"> \
+                    matchmap \
+                    <input type="text" name="cam2map!matchmap" value="default"> \
+                    pixres \
+                    <input type="text" name="cam2map!pixres" value="default"> \
+                    defaultrange \
+                    <input type="text" name="cam2map!defaultrange" value="default"> \
+                    <br> \
+                    <input type="submit">'
+                );
+            }
+            else if ( mission == "gssi" ) {
+                $("#job").html('\
+                    <input type="checkbox" name="gllssi2isis!check" checked> \
+                    gllssi2isis \
+                    from_ \
+                    <input type="text" name="gllssi2isis!from_" value="default"> \
+                    to \
+                    <input type="text" name="gllssi2isis!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="spiceinit!check" checked> \
+                    spiceinit \
+                    from_ \
+                    <input type="text" name="spiceinit!from_" value="default"> \
+                    cknadir \
+                    <input type="text" name="spiceinit!cknadir" value="default"> \
+                    cksmithed \
+                    <input type="text" name="spiceinit!cksmithed" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="gllssical!check" checked> \
+                    gllssical \
+                    from_ \
+                    <input type="text" name="gllssical!from_" value="default"> \
+                    to \
+                    <input type="text" name="gllssical!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="cam2map!check" checked> \
+                    cam2map \
+                    from \
+                    <input type="text" name="cam2map!from" value="default"> \
+                    to \
+                    <input type="text" name="cam2map!to" value="default"> \
+                    map \
+                    <input type="text" name="cam2map!map" value="default"> \
+                    matchmap \
+                    <input type="text" name="cam2map!matchmap" value="default"> \
+                    pixres \
+                    <input type="text" name="cam2map!pixres" value="default"> \
+                    defaultrange \
+                    <input type="text" name="cam2map!defaultrange" value="default"> \
+                    <br> \
+                    <input type="submit">'
+                );
+            }
+            else {
+                $("#job").html("<p>This mission is not supported.<p>");
+            }
+
         });
+    });
+
+    $(function() {
+        $("#test").submit( function( e ) {
+
+            e.preventDefault();
+
+            var form = $(this);
+            var url = "/formtest";
+            var method = "POST";
+            $.ajax({
+                type: method,
+                url: url,
+                data: form.serialize()
+            });
+        });
+    });
 </script>
 
 <div class='container'>
-    <h3>Test</h3>
-        <form>
-            <a href=# id=test><button class='btn btn-default'>Test</button></a>
-        </form>
+    <form id="mission">
+        <select name="mission">
+            <option value="mro">MRO</option>
+            <option value="gssi">GSSI</option>
+        </select>
+        <input type="submit" value="Select">
+    </form>
+    <form id="job">
+        <!-- <input type="checkbox" name="test!check" checked>
+        gllssi2isis
+        from_
+        <input type="text" name="test!from_">
+        to
+        <input type="text" name="test!to">
+        <input type="submit"> -->
+    </form>
 
 </div>

@@ -53,7 +53,7 @@ class DAGObject:
     def __str__( self ):
         output = '''%s = BashOperator(
     task_id="%s",
-    bash_command="%s",
+    bash_command="echo %s",
     retries=3,
     dag=dag
 )'''
@@ -185,6 +185,11 @@ def get_commands_from_json( recipe ):
 # TODO: Change data to recipe
 # Parameter is JSON recipe
 def generate( data ):
+
+    print( "3\n\n\n\n" )
+    print( data )
+    print( "4\n\n\n\n")
+
 
     dag_objects = get_commands_from_json( data )
     dag_string = generate_dag( dag_objects )

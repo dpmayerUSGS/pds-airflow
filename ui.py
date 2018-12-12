@@ -7,7 +7,7 @@ import os
 import json
 import requests
 
-from flask import Flask
+from flask import Flask, request, jsonify
 from rest_api import REST_API_PORT
 
 
@@ -30,15 +30,27 @@ ui_app = Flask( __name__ + "_ui" )
 
 @ui_app.route( "/" )
 def hello_world():
+
     with open( "ui.html", "r" ) as html:
         return html.read()
 
 
-@ui_app.route( "/background_process_test" )
-def background_process_test():
+@ui_app.route( "/formtest", methods=["POST"] )
+def formtest():
 
-    print( "Test" )
+    print( request.form )
+
+    for key in request.form.keys():
+        print( key, request.form[key] )
+
     return "Test successful."
+
+
+@ui_app.route( "/handle_data", methods=["POST"] )
+def handle_data():
+    print( request.form )
+    print( request.form["test"] )
+    return "test"
 
 
 # Sends a simple test
