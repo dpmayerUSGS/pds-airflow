@@ -5,6 +5,7 @@
 
 import os
 import json
+import requests
 
 from flask import Flask
 from rest_api import REST_API_PORT
@@ -37,7 +38,9 @@ def hello_world():
 @ui_app.route( "/test" )
 def test():
 
-    os.system( "curl http://localhost:" + str(REST_API_PORT) + "/test -d \"data=\" -X POST" )
+    #os.system( "curl http://localhost:" + str(REST_API_PORT) + "/test -X POST -d \"data=\"" )
+    requests.post( "http://localhost:" + str(REST_API_PORT) + "/test", headers={"content-type": "application/json"}, json={} )
+
     return "test"
 
 
@@ -47,8 +50,9 @@ def test():
 def dag_test():
 
     with open( "REST_json.json", "r" ) as recipe_file:
-        data = json.load( recipe_file )
-        os.system( "curl http://localhost:" + str(REST_API_PORT) + "/dagtest -X POST -d \"data=" + json.dumps(data).replace(" ", "").replace( "\"", "\\\"") + "\"" )
+        recipe_json = json.load( recipe_file )
+        #os.system( "curl http://localhost:" + str(REST_API_PORT) + "/dagtest -X POST -d \"data=" + json.dumps(data).replace(" ", "").replace( "\"", "\\\"") + "\"" )
+        requests.post( "http://localhost:" + str(REST_API_PORT) + "/dagtest", headers={"content-type": "application/json"}, json=recipe_json )
 
     return "dag test"
 

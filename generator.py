@@ -161,10 +161,8 @@ def get_commands_from_file( recipe_file ):
     return dag_objects
 
 
-# Gets a list of DAG objects from a json file containing UI output, using input
-def get_commands_from_json( recipe_string ):
-
-    recipe = json.loads( recipe_string )
+# Gets a list of DAG objects from a json file containing UI output, using json object
+def get_commands_from_json( recipe ):
 
     mission = recipe["mission"]
     output = recipe["output"]
@@ -197,7 +195,7 @@ def generate( data ):
 
 # Tests generator library import
 def test():
-    print( "Test successful server." )
+
     return "Test successful response."
 
 
