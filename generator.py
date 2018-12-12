@@ -87,7 +87,7 @@ from datetime import datetime, timedelta
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
-    "start_date": datetime( 2018, 1, 1 ),
+    "start_date": datetime.today(),
     "email": ["airflow@example.com"],
     "email_on_failure": False,
     "email_on_retry": False,
@@ -95,7 +95,7 @@ default_args = {
     "retry_delay": timedelta( minutes=5 ),
 }
 
-dag = DAG( "%s", default_args=default_args )
+dag = DAG( "%s", default_args=default_args, schedule_interval="@once" )
 
 start = BashOperator(
     task_id="start",
