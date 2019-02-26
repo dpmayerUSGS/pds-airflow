@@ -1,10 +1,14 @@
 {
     "mission": "galileo_ssi_edr",
     "tasks": [
-        ["gllssi2isis", [["from_", "value"], ["to", "value"]]],
-        ["spiceinit", [["from_", "value"], ["cknadir", "yes"], ["cksmithed", "yes"]]],
-        ["gllsiical", [["from_", "value"], ["to", "value"]]],
-        ["cam2map", [["from", "value"], ["to", "value"], ["map", "value"], ["matchmap", "no"], ["pixres", "value"], ["defaultrange", "value"]]]
+        ["gllssi2isis", [["from", "value"], ["to", "value"]]],
+        ["spiceinit", [["from", "value"], ["cksmithed", "yes"]]],
+        ["gllsiical", [["from", "value"], ["to", "value"]]],
+        ["cam2map", [["from", "value"], ["to", "value"]]],
+        ["isis2std", [["from", "value"], ["to", "value"], ["mode", "grayscale"], ["format", "png"]]]
     ],
-    "output": "/home/images"
+    "output": "/home/images",
+    "images": [],
+    "sources": ["http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.img",
+                "http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/7446r.img"]
 }

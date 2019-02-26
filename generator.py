@@ -4,6 +4,7 @@
 
 
 import json
+import copy
 
 from datetime import datetime
 
@@ -31,9 +32,10 @@ DAG_DIRECTORY = "./dags/"
 
 class CommandObject:
 
-    def __init__( self, command, parameters ):
+    def __init__( self, name, command, parameters ):
         self.command = command
         self.parameters = parameters
+        self.name = name
 
     def __str__( self ):
         output = self.command
@@ -42,6 +44,17 @@ class CommandObject:
             output += " " + parameter[0] + "=" + parameter[1]
 
         return output
+
+
+class WGETCommandObject:
+
+    def __init__( self, name, parameter ):
+        self.command = "cd /img && wget"
+        self.parameter = parameter
+        self.name = "wget" + name
+
+    def __str__( self ):
+        return self.command + " " + self.parameter
 
 
 class DAGObject:
@@ -53,17 +66,17 @@ class DAGObject:
     def __str__( self ):
         output = '''%s = BashOperator(
     task_id="%s",
-    bash_command="echo %s",
+    bash_command="%s",
     retries=3,
     dag=dag
 )'''
 
-        output = output % (self.command.command, self.command.command, str(self.command))
+        output = output % (self.command.name, self.command.name, str(self.command))
 
         return output
 
-    def get_command( self ):
-        return self.command.command
+    def get_name( self ):
+        return self.command.name
 
 
 
@@ -95,7 +108,7 @@ default_args = {
     "retry_delay": timedelta( minutes=5 ),
 }
 
-dag = DAG( "%s", default_args=default_args, schedule_interval="@once" )
+dag = DAG( "image_generation_dag", default_args=default_args, schedule_interval="@once" )
 
 start = BashOperator(
     task_id="start",
@@ -108,15 +121,15 @@ start = BashOperator(
         dag_string += "\n\n" + str( dag_object )
 
     dag_string += "\n"
-    dag_string += "\nstart.set_downstream(" + dag_objects[0].get_command() + ")"
+    dag_string += "\nstart.set_downstream(" + dag_objects[0].get_name() + ")"
 
     for index in range( len( dag_objects ) - 1 ):
-        dag_string += "\n" + dag_objects[index].get_command() + ".set_downstream(" + dag_objects[index + 1].get_command() + ")"
+        dag_string += "\n" + dag_objects[index].get_name() + ".set_downstream(" + dag_objects[index + 1].get_name() + ")"
 
     return dag_string
 
 
-# DEPRECATED
+# FOR TESTING
 # Gets a list of DAG objects from a json file containing UI output, using filename
 def get_commands_from_filename( recipe_filename ):
 
@@ -126,12 +139,34 @@ def get_commands_from_filename( recipe_filename ):
         mission = recipe["mission"]
         output = recipe["output"]
         tasks = recipe["tasks"]
+        images = recipe["images"]
+        sources = recipe["sources"]
 
         commands = []
         dag_objects = []
 
-        for task in tasks:
-            commands.append( CommandObject( task[0], task[1] ) )
+        if( images == [] ):
+            for source in sources:
+                images.append( source.split("/")[-1] )
+                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
+                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
+
+        for image in images:
+            for task in tasks:
+                parameters = task[1]
+                for index in range( len( parameters ) ):
+                    if( parameters[index][0] == "from" ):
+                        if( "2isis" in task[0] ):
+                            parameters[index][1] = "img/" + image
+                        else:
+                            parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                    elif( parameters[index][0] == "to" ):
+                        if( task[0] == "isis2std" ):
+                            parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
+                        else:
+                            parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+
+                commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
         for command in commands:
             dag_objects.append( DAGObject( command ) )
@@ -148,16 +183,34 @@ def get_commands_from_file( recipe_file ):
     mission = recipe["mission"]
     output = recipe["output"]
     tasks = recipe["tasks"]
+    images = recipe["images"]
+    sources = recipe["sources"]
 
     commands = []
     dag_objects = []
 
-    for task in tasks:
-        commands.append( CommandObject( task[0], task[1] ) )
+    if( images == [] ):
+        for source in sources:
+            images.append( source.split("/")[-1] )
+            commands.append( WGETCommandObject( source ) )
+
+    for image in images:
+        for task in tasks:
+            print( task )
+            parameters = task[1]
+            for index in range( len( parameters ) ):
+                if( parameters[index][0] == "from" ):
+                    if( "2isis" in task[0] ):
+                        parameters[index][1] = "img/" + image
+                    else:
+                        parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                elif( parameters[index][0] == "to" ):
+                    parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+
+            commands.append( CommandObject( task[0], task[1] ) )
 
     for command in commands:
         dag_objects.append( DAGObject( command ) )
-
     return dag_objects
 
 
@@ -167,12 +220,34 @@ def get_commands_from_json( recipe ):
     mission = recipe["mission"]
     output = recipe["output"]
     tasks = recipe["tasks"]
+    images = recipe["images"]
+    sources = recipe["sources"]
 
     commands = []
     dag_objects = []
 
-    for task in tasks:
-        commands.append( CommandObject( task[0], task[1] ) )
+    if( images == [] ):
+        for source in sources:
+            images.append( source.split("/")[-1] )
+            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
+            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
+
+    for image in images:
+        for task in tasks:
+            parameters = task[1]
+            for index in range( len( parameters ) ):
+                if( parameters[index][0] == "from" ):
+                    if( "2isis" in task[0] ):
+                        parameters[index][1] = "img/" + image
+                    else:
+                        parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                elif( parameters[index][0] == "to" ):
+                    if( task[0] == "isis2std" ):
+                        parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
+                    else:
+                        parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+
+            commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
     for command in commands:
         dag_objects.append( DAGObject( command ) )
@@ -185,11 +260,6 @@ def get_commands_from_json( recipe ):
 # TODO: Change data to recipe
 # Parameter is JSON recipe
 def generate( data ):
-
-    print( "3\n\n\n\n" )
-    print( data )
-    print( "4\n\n\n\n")
-
 
     dag_objects = get_commands_from_json( data )
     dag_string = generate_dag( dag_objects )
