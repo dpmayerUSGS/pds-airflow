@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Theme UI</title>
+    <script src="https://fastcdn.org/Papa-Parse/4.1.2/papaparse.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/vendor/noui/nouislider.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/css/util.css">
+    <link rel="stylesheet" type="text/css" href="static/css/main.css">
+<!--===============================================================================================-->
+
+<!-- OLd UI SCRIPTS -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+<style>
+    input[type=text] { width: 100px; }
+</style>
+<script type=text/javascript>
+
+      function getMissionID() {
+      if (imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM")
+      {
+      value = "gssi";
+      }
+        return value;
+      }
+
+    $(function() {
+        $("#mission").submit( function( e ) {
+
+            e.preventDefault();
+            imageurls =[];
+            for (i = 0; i < imagedata.data.length-1; i++) {
+               imageurls.push(imagedata.data[i][" edr_detached_label"]);
+            }
+
+            var mission = getMissionID();
+
+
+            if( mission == "mro" ) {
+                $("#job").html(' \
+                    mission: \
+                    <input type="text" name="mission" value="mro_ctx" readonly> \
+                    <br> \
+                    <br> \
+                    select programs: \
+                    <br> \
+                    <input type="checkbox" name="mroctx2isis!check" checked> \
+                    mroctx2isis \
+                    from_ \
+                    <input type="text" name="mroctx2isis!from_" value="default"> \
+                    to \
+                    <input type="text" name="mroctx2isis!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="spiceinit!check" checked> \
+                    spiceinit \
+                    from_ \
+                    <input type="text" name="spiceinit!from_" value="default"> \
+                    cknadir \
+                    <input type="text" name="spiceinit!cknadir" value="default"> \
+                    cksmithed \
+                    <input type="text" name="spiceinit!cksmithed" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="ctxcal!check" checked> \
+                    ctxcal \
+                    from_ \
+                    <input type="text" name="ctxcal!from_" value="default"> \
+                    to \
+                    <input type="text" name="ctxcal!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="ctxevenodd!check" checked> \
+                    ctxevenodd \
+                    from_ \
+                    <input type="text" name="ctxevenodd!from_" value="default"> \
+                    to \
+                    <input type="text" name="ctxevenodd!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="cam2map!check" checked> \
+                    cam2map \
+                    from \
+                    <input type="text" name="cam2map!from" value="default"> \
+                    to \
+                    <input type="text" name="cam2map!to" value="default"> \
+                    map \
+                    <input type="text" name="cam2map!map" value="default"> \
+                    matchmap \
+                    <input type="text" name="cam2map!matchmap" value="default"> \
+                    pixres \
+                    <input type="text" name="cam2map!pixres" value="default"> \
+                    defaultrange \
+                    <input type="text" name="cam2map!defaultrange" value="default"> \
+                    <br> \
+                    <br> \
+                    output: \
+                    <input type="text" name="output" value="default"> \
+                    <br> \
+                    <br> \
+                    <input type="submit">'
+                );
+            }
+            else if ( mission == "gssi" ) {
+
+                $("#job").html(' \
+                    mission: \
+                    <input type="text" name="mission" value="galileo_ssi_edr" readonly> \
+                    <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
+                    <br> \
+                    <br> \
+                    select programs: \
+                    <br> \
+                    <input type="checkbox" name="gllssi2isis!check" checked> \
+                    gllssi2isis \
+                    from_ \
+                    <input type="text" name="gllssi2isis!from" value="default"> \
+                    to \
+                    <input type="text" name="gllssi2isis!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="spiceinit!check" checked> \
+                    spiceinit \
+                    from_ \
+                    <input type="text" name="spiceinit!from" value="default"> \
+                    cknadir \
+                    <input type="text" name="spiceinit!cknadir" value="default"> \
+                    cksmithed \
+                    <input type="text" name="spiceinit!cksmithed" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="gllssical!check" checked> \
+                    gllssical \
+                    from_ \
+                    <input type="text" name="gllssical!from" value="default"> \
+                    to \
+                    <input type="text" name="gllssical!to" value="default"> \
+                    <br> \
+                    <input type="checkbox" name="cam2map!check" checked> \
+                    cam2map \
+                    from \
+                    <input type="text" name="cam2map!from" value="default"> \
+                    to \
+                    <input type="text" name="cam2map!to" value="default"> \
+                    map \
+                    <input type="text" name="cam2map!map" value="default"> \
+                    matchmap \
+                    <input type="text" name="cam2map!matchmap" value="default"> \
+                    pixres \
+                    <input type="text" name="cam2map!pixres" value="default"> \
+                    defaultrange \
+                    <input type="text" name="cam2map!defaultrange" value="default"> \
+                    <br> \
+                    <br> \
+                    output: \
+                    <input type="text" name="output" value="default"> \
+                    <br> \
+                    <br> \
+                    <input type="submit" name="submit">'
+                );
+            }
+
+            else {
+                $("#job").html("<p>This mission is not supported.<p>");
+            }
+
+        });
+    });
+
+    $(function() {
+
+        var $submitters = $("#job").find( "input[type=submit]" );
+
+        $("#job").submit( function( e ) {
+
+            //e.preventDefault();
+            var form = $(this);
+            var url = "/submit";
+            var method = "POST";
+            $.ajax({
+                type: method,
+                url: url,
+                data: form.serialize()
+            });
+        });
+    });
+
+</script>
+
+
+
+</head>
+
+<body>
+  <!-- <style type="text/css">
+  .container-contact100 {
+    background-image: url("https://photojournal.jpl.nasa.gov/jpeg/PIA22512.jpg")
+  }
+  </style> -->
+
+  <script>
+    var imagedata;
+
+
+    function handleFileSelect(evt) {
+      var file = evt.target.files[0];
+
+      Papa.parse(file, {
+        header: true,
+        dynamicTyping: true,
+        complete: function(results) {
+          imagedata = results;
+
+        }
+      });
+    }
+
+    $(document).ready(function(){
+      $("#csv-file").change(handleFileSelect);
+
+    });
+
+    </script>
+      <script>
+
+      </script>
+
+
+<!--
+    Begin the UI Sample transition
+    -->
+
+
+    <div class="container-contact100">
+        <div class="wrap-contact100">
+            <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
+                <span class="contact100-form-title">
+                    Testing Pypeline
+                </span>
+
+
+
+                <div class="wrap-input100 input100-select bg1">
+                    <span class="label-input100"></span>
+                    <div>
+                        <input type="file" id="csv-file" name="files"/>
+                        <!-- <select class="js-select2" name="mission">
+                            <option value="Apollo">Apollo</option>
+                            <option value="mro">MRO</option>
+                            <option value="gssi">Galileo</option>
+                            <option value="notsupported">Cassini</option>
+                        </select>
+                        <div class="dropDownSelect2"></div> -->
+
+                        <div class="container-contact100-form-btn">
+
+                            <button class="contact100-form-btn" type="submit">
+                                <span>
+                                    Submit CSV
+                                    <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form id="job" action="/submit" method="post"></form>
+
+        </div>
+    </div>
+
+
+
+<!--===============================================================================================-->
+    <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/bootstrap/js/popper.js"></script>
+    <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script>
+        $(".js-select2").each(function(){
+            $(this).select2({
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next('.dropDownSelect2')
+            });
+
+
+            $(".js-select2").each(function(){
+                $(this).on('select2:close', function (e){
+                    if($(this).val() == "Please chooses") {
+                        $('.js-show-service').slideUp();
+                    }
+                    else {
+                        $('.js-show-service').slideUp();
+                        $('.js-show-service').slideDown();
+                    }
+                });
+            });
+        })
+    </script>
+<!--===============================================================================================-->
+    <script src="static/vendor/daterangepicker/moment.min.js"></script>
+    <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/noui/nouislider.min.js"></script>
+    <script>
+        var filterBar = document.getElementById('filter-bar');
+
+        noUiSlider.create(filterBar, {
+            start: [ 1500, 3900 ],
+            connect: true,
+            range: {
+                'min': 1500,
+                'max': 7500
+            }
+        });
+
+        var skipValues = [
+        document.getElementById('value-lower'),
+        document.getElementById('value-upper')
+        ];
+
+        filterBar.noUiSlider.on('update', function( values, handle ) {
+            skipValues[handle].innerHTML = Math.round(values[handle]);
+            $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+            $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+        });
+    </script>
+<!--===============================================================================================-->
+    <script src="static/js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+<!--
+    End UI Sample transition
+
+
+<div class='container'>
+    <form id="mission">
+        <select name="mission">
+            <option value="mro">MRO</option>
+            <option value="gssi">GSSI</option>
+            <option value="Apollo">Apollo</option>
+            <option value="notsupported">Cassini</option>
+        </select>
+        <input type="submit" value="Select">
+    </form>
+    <form id="job" action="/submit" method="post">
+
+    </form> -->
+
+</div>
+
+<!--===============================================================================================-->
+    <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/bootstrap/js/popper.js"></script>
+    <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/select2/select2.min.js"></script>
+    <script>
+        $(".js-select2").each(function(){
+            $(this).select2({
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next('.dropDownSelect2')
+            });
+
+
+            $(".js-select2").each(function(){
+                $(this).on('select2:close', function (e){
+                    if($(this).val() == "Please chooses") {
+                        $('.js-show-service').slideUp();
+                    }
+                    else {
+                        $('.js-show-service').slideUp();
+                        $('.js-show-service').slideDown();
+                    }
+                });
+            });
+        })
+    </script>
+<!--===============================================================================================-->
+    <script src="static/vendor/daterangepicker/moment.min.js"></script>
+    <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+    <script src="static/vendor/noui/nouislider.min.js"></script>
+    <script>
+        var filterBar = document.getElementById('filter-bar');
+
+        noUiSlider.create(filterBar, {
+            start: [ 1500, 3900 ],
+            connect: true,
+            range: {
+                'min': 1500,
+                'max': 7500
+            }
+        });
+
+        var skipValues = [
+        document.getElementById('value-lower'),
+        document.getElementById('value-upper')
+        ];
+
+        filterBar.noUiSlider.on('update', function( values, handle ) {
+            skipValues[handle].innerHTML = Math.round(values[handle]);
+            $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+            $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+        });
+    </script>
+<!--===============================================================================================-->
+    <script src="static/js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+</body>
+
+</html>
