@@ -42,7 +42,11 @@
       function getMissionID() {
       if (imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM")
       {
-      value = "gssi";
+        value = "gssi";
+      }
+      else if (imagedata.data[0][" instrument"] == " CTX")
+      {
+        value = "mro";
       }
         return value;
       }
@@ -53,31 +57,40 @@
             e.preventDefault();
             imageurls =[];
             for (i = 0; i < imagedata.data.length-1; i++) {
-               imageurls.push(imagedata.data[i][" edr_detached_label"]);
+               imageurls.push(imagedata.data[i][" edr_source"]);
             }
 
             var mission = getMissionID();
 
 
             if( mission == "mro" ) {
+                var imageThumbs = '';
+                for (i = 0; i < imagedata.data.length-1; i++)
+                {
+                  var url = imagedata.data[i][" edr_source"]
+                  var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
+                  imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
+                }
                 $("#job").html(' \
                     mission: \
                     <input type="text" name="mission" value="mro_ctx" readonly> \
-                    <br> \
-                    <br> \
+                    <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
+                    <br>'
+                    + imageThumbs +
+                    '<br> \
                     select programs: \
                     <br> \
                     <input type="checkbox" name="mroctx2isis!check" checked> \
                     mroctx2isis \
-                    from_ \
-                    <input type="text" name="mroctx2isis!from_" value="default"> \
+                    from \
+                    <input type="text" name="mroctx2isis!from" value="default"> \
                     to \
                     <input type="text" name="mroctx2isis!to" value="default"> \
                     <br> \
                     <input type="checkbox" name="spiceinit!check" checked> \
                     spiceinit \
-                    from_ \
-                    <input type="text" name="spiceinit!from_" value="default"> \
+                    from \
+                    <input type="text" name="spiceinit!from" value="default"> \
                     cknadir \
                     <input type="text" name="spiceinit!cknadir" value="default"> \
                     cksmithed \
@@ -85,15 +98,15 @@
                     <br> \
                     <input type="checkbox" name="ctxcal!check" checked> \
                     ctxcal \
-                    from_ \
-                    <input type="text" name="ctxcal!from_" value="default"> \
+                    from \
+                    <input type="text" name="ctxcal!from" value="default"> \
                     to \
                     <input type="text" name="ctxcal!to" value="default"> \
                     <br> \
                     <input type="checkbox" name="ctxevenodd!check" checked> \
                     ctxevenodd \
-                    from_ \
-                    <input type="text" name="ctxevenodd!from_" value="default"> \
+                    from \
+                    <input type="text" name="ctxevenodd!from" value="default"> \
                     to \
                     <input type="text" name="ctxevenodd!to" value="default"> \
                     <br> \
@@ -121,25 +134,37 @@
                 );
             }
             else if ( mission == "gssi" ) {
-
+                // <img src="/static/thumbnails/mro22.jpg"> \
+                // " http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.lbl"
+                var imageThumbs = '';
+                for (i = 0; i < imagedata.data.length-1; i++)
+                {
+                  // var url = imagedata.data[i][" edr_detached_label"]
+                  // var thumb = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+                  // imageThumbs += '<img src="/static/thumbnails/'+ thumb +'.thumbnail.jpg"> \ ';
+                  var url = imagedata.data[i][" edr_source"]
+                  var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
+                  imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
+                }
                 $("#job").html(' \
                     mission: \
                     <input type="text" name="mission" value="galileo_ssi_edr" readonly> \
                     <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
-                    <br> \
-                    <br> \
+                    <br>'
+                    + imageThumbs +
+                    '<br> \
                     select programs: \
                     <br> \
                     <input type="checkbox" name="gllssi2isis!check" checked> \
                     gllssi2isis \
-                    from_ \
+                    from \
                     <input type="text" name="gllssi2isis!from" value="default"> \
                     to \
                     <input type="text" name="gllssi2isis!to" value="default"> \
                     <br> \
                     <input type="checkbox" name="spiceinit!check" checked> \
                     spiceinit \
-                    from_ \
+                    from \
                     <input type="text" name="spiceinit!from" value="default"> \
                     cknadir \
                     <input type="text" name="spiceinit!cknadir" value="default"> \
@@ -148,7 +173,7 @@
                     <br> \
                     <input type="checkbox" name="gllssical!check" checked> \
                     gllssical \
-                    from_ \
+                    from \
                     <input type="text" name="gllssical!from" value="default"> \
                     to \
                     <input type="text" name="gllssical!to" value="default"> \
@@ -208,10 +233,12 @@
 
 </head>
 
-<body>
-  <!-- <style type="text/css">
+<!-- <body>
+  <style type="text/css">
   .container-contact100 {
-    background-image: url("https://photojournal.jpl.nasa.gov/jpeg/PIA22512.jpg")
+    background-image: url("https://photojournal.jpl.nasa.gov/jpeg/PIA22512.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
   }
   </style> -->
 
@@ -252,7 +279,7 @@
         <div class="wrap-contact100">
             <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
                 <span class="contact100-form-title">
-                    Testing Pypeline
+                    Pypline
                 </span>
 
 

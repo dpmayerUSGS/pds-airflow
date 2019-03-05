@@ -44,7 +44,6 @@ class CommandObject:
             if(parameter[1] != "default"):
                 output += " " + parameter[0] + "="
                 if(parameter[0] == "from" or parameter[0] == "to"):
-                    print("test")
                     output += "/"
                 output += parameter[1]
 
@@ -156,22 +155,27 @@ def get_commands_from_filename( recipe_filename ):
             for source in sources:
                 images.append( source.split("/")[-1] )
                 commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
-                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "img", source.replace( ".lbl", ".img" ) ) )
+                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
 
         for image in images:
+            file_index = 0
             for task in tasks:
                 parameters = task[1]
                 for index in range( len( parameters ) ):
                     if( parameters[index][0] == "from" ):
                         if( "2isis" in task[0] ):
-                            parameters[index][1] = "img/" + image
+                            if(task[0] == "gllssi2isis"):
+                                parameters[index][1] = "img/" + image.split(".")[0] + ".lbl"
+                            else:
+                                parameters[index][1] = "img/" + image
                         else:
-                            parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                            parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
                     elif( parameters[index][0] == "to" ):
+                        file_index += 1
                         if( task[0] == "isis2std" ):
                             parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
                         else:
-                            parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                            parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
 
                 commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
@@ -185,7 +189,7 @@ def get_commands_from_filename( recipe_filename ):
 # Gets a list of DAG objects from a json file containing UI output, using file
 def get_commands_from_file( recipe_file ):
 
-    recipe = json.load( recipe_file )
+    recipe = json.load( file )
 
     mission = recipe["mission"]
     output = recipe["output"]
@@ -224,42 +228,51 @@ def get_commands_from_file( recipe_file ):
 # Gets a list of DAG objects from a json file containing UI output, using json object
 def get_commands_from_json( recipe ):
 
-    mission = recipe["mission"]
-    output = recipe["output"]
-    tasks = recipe["tasks"]
-    images = recipe["images"]
-    sources = recipe["sources"]
+    # with open( recipe_filename, "r", ) as file:
+    #     recipe = json.load( file )
 
-    commands = []
-    dag_objects = []
+        mission = recipe["mission"]
+        output = recipe["output"]
+        tasks = recipe["tasks"]
+        images = recipe["images"]
+        sources = recipe["sources"]
 
-    if( images == [] ):
-        for source in sources:
-            images.append( source.split("/")[-1] )
-            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
-            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "img", source.replace( ".lbl", ".img" ) ) )
+        commands = []
+        dag_objects = []
 
-    for image in images:
-        for task in tasks:
-            parameters = task[1]
-            for index in range( len( parameters ) ):
-                if( parameters[index][0] == "from" ):
-                    if( "2isis" in task[0] ):
-                        parameters[index][1] = "img/" + image
-                    else:
-                        parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
-                elif( parameters[index][0] == "to" ):
-                    if( task[0] == "isis2std" ):
-                        parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
-                    else:
-                        parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+        if( images == [] ):
+            for source in sources:
+                images.append( source.split("/")[-1] )
+                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
+                if(mission == "galileo_ssi_edr"):
+                    commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
 
-            commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
+        for image in images:
+            file_index = 0
+            for task in tasks:
+                parameters = task[1]
+                for index in range( len( parameters ) ):
+                    if( parameters[index][0] == "from" ):
+                        if( "2isis" in task[0] ):
+                            if(task[0] == "gllssi2isis"):
+                                parameters[index][1] = "img/" + image.split(".")[0] + ".lbl"
+                            else:
+                                parameters[index][1] = "img/" + image
+                        else:
+                            parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
+                    elif( parameters[index][0] == "to" ):
+                        file_index += 1
+                        if( task[0] == "isis2std" ):
+                            parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
+                        else:
+                            parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
 
-    for command in commands:
-        dag_objects.append( DAGObject( command ) )
+                commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
-    return dag_objects
+        for command in commands:
+            dag_objects.append( DAGObject( command ) )
+
+        return dag_objects
 
 
 # Generates a pipeline job
