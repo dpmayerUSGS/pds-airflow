@@ -88,7 +88,7 @@ def submit():
     recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list }
     recipe_string = json.dumps( recipe )
     recipe_json = json.loads( recipe_string )
-    requests.post( "http://localhost:" + str(REST_API_PORT) + "/dagtest", headers={"content-type": "application/json"}, json=recipe_json )
+    requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
 
     page_string = ""
 

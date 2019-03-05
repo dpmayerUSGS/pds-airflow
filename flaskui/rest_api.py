@@ -43,7 +43,7 @@ class PipelineJob( Resource ):
 
             return { "Response": generator.test() }
 
-        if( job_id == "dagtest" ):
+        if( job_id == "submit" ):
             try:
                 print(request.data)
                 generator.generate( json.loads( request.data ) )
