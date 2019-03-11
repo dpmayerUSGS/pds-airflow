@@ -52,169 +52,95 @@
       }
 
     $(function() {
-        $("#mission").submit( function( e ) {
-
+        $("#mission").submit( function( e )
+        {
             e.preventDefault();
             imageurls =[];
-            for (i = 0; i < imagedata.data.length-1; i++) {
-               imageurls.push(imagedata.data[i][" edr_source"]);
+            for (index = 0; index < imagedata.data.length - 1; index++)
+            {
+               imageurls.push(imagedata.data[index][" edr_source"]);
             }
 
             var mission = getMissionID();
+            var html_string = "";
 
-
-            if( mission == "mro" ) {
-                var imageThumbs = '';
-                for (i = 0; i < imagedata.data.length-1; i++)
+            if( mission == "mro" )
+            {
+                $.getJSON( "static/recipes/mro_ctx.json", function( json )
                 {
-                  var url = imagedata.data[i][" edr_source"]
-                  var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
-                  imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
-                }
-                $("#job").html(' \
-                    mission: \
-                    <input type="text" name="mission" value="mro_ctx" readonly> \
-                    <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
-                    <br>'
-                    + imageThumbs +
-                    '<br> \
-                    select programs: \
-                    <br> \
-                    <input type="checkbox" name="mroctx2isis!check" checked> \
-                    mroctx2isis \
-                    from \
-                    <input type="text" name="mroctx2isis!from" value="default"> \
-                    to \
-                    <input type="text" name="mroctx2isis!to" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="spiceinit!check" checked> \
-                    spiceinit \
-                    from \
-                    <input type="text" name="spiceinit!from" value="default"> \
-                    cknadir \
-                    <input type="text" name="spiceinit!cknadir" value="default"> \
-                    cksmithed \
-                    <input type="text" name="spiceinit!cksmithed" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="ctxcal!check" checked> \
-                    ctxcal \
-                    from \
-                    <input type="text" name="ctxcal!from" value="default"> \
-                    to \
-                    <input type="text" name="ctxcal!to" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="ctxevenodd!check" checked> \
-                    ctxevenodd \
-                    from \
-                    <input type="text" name="ctxevenodd!from" value="default"> \
-                    to \
-                    <input type="text" name="ctxevenodd!to" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="cam2map!check" checked> \
-                    cam2map \
-                    from \
-                    <input type="text" name="cam2map!from" value="default"> \
-                    to \
-                    <input type="text" name="cam2map!to" value="default"> \
-                    map \
-                    <input type="text" name="cam2map!map" value="default"> \
-                    matchmap \
-                    <input type="text" name="cam2map!matchmap" value="default"> \
-                    pixres \
-                    <input type="text" name="cam2map!pixres" value="default"> \
-                    defaultrange \
-                    <input type="text" name="cam2map!defaultrange" value="default"> \
-                    <br> \
-                    <br> \
-                    output: \
-                    <input type="text" name="output" value="default"> \
-                    <br> \
-                    <br> \
-                    <input type="submit">'
-                );
+                    for( var command in json["pow"]["recipe"] )
+                    {
+                        html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                        // console.log( json["pow"]["recipe"][key] );
+                        for( var param in json["pow"]["recipe"][command] )
+                        {
+                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                        }
+                    }
+                    html_string += '<input type="text" name="output" value="default">'
+                    html_string += '<br><br><input type="submit">'
+                    var imageThumbs = '';
+                    for (index = 0; index < imagedata.data.length - 1; index++)
+                    {
+                      var url = imagedata.data[index][" edr_source"]
+                      var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
+                      imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
+                    }
+                    $("#job").html(' \
+                        mission: \
+                        <input type="text" name="mission" value="mro_ctx" readonly> \
+                        <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
+                        <br>'
+                        + imageThumbs + html_string
+                    );
+                });
             }
-            else if ( mission == "gssi" ) {
-                // <img src="/static/thumbnails/mro22.jpg"> \
-                // " http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.lbl"
-                var imageThumbs = '';
-                for (i = 0; i < imagedata.data.length-1; i++)
+            else if ( mission == "gssi" )
+            {
+                $.getJSON( "static/recipes/mro_ctx.json", function( json )
                 {
-                  // var url = imagedata.data[i][" edr_detached_label"]
-                  // var thumb = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
-                  // imageThumbs += '<img src="/static/thumbnails/'+ thumb +'.thumbnail.jpg"> \ ';
-                  var url = imagedata.data[i][" edr_source"]
-                  var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
-                  imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
-                }
-                $("#job").html(' \
-                    mission: \
-                    <input type="text" name="mission" value="galileo_ssi_edr" readonly> \
-                    <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
-                    <br>'
-                    + imageThumbs +
-                    '<br> \
-                    select programs: \
-                    <br> \
-                    <input type="checkbox" name="gllssi2isis!check" checked> \
-                    gllssi2isis \
-                    from \
-                    <input type="text" name="gllssi2isis!from" value="default"> \
-                    to \
-                    <input type="text" name="gllssi2isis!to" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="spiceinit!check" checked> \
-                    spiceinit \
-                    from \
-                    <input type="text" name="spiceinit!from" value="default"> \
-                    cknadir \
-                    <input type="text" name="spiceinit!cknadir" value="default"> \
-                    cksmithed \
-                    <input type="text" name="spiceinit!cksmithed" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="gllssical!check" checked> \
-                    gllssical \
-                    from \
-                    <input type="text" name="gllssical!from" value="default"> \
-                    to \
-                    <input type="text" name="gllssical!to" value="default"> \
-                    <br> \
-                    <input type="checkbox" name="cam2map!check" checked> \
-                    cam2map \
-                    from \
-                    <input type="text" name="cam2map!from" value="default"> \
-                    to \
-                    <input type="text" name="cam2map!to" value="default"> \
-                    map \
-                    <input type="text" name="cam2map!map" value="default"> \
-                    matchmap \
-                    <input type="text" name="cam2map!matchmap" value="default"> \
-                    pixres \
-                    <input type="text" name="cam2map!pixres" value="default"> \
-                    defaultrange \
-                    <input type="text" name="cam2map!defaultrange" value="default"> \
-                    <br> \
-                    <br> \
-                    output: \
-                    <input type="text" name="output" value="default"> \
-                    <br> \
-                    <br> \
-                    <input type="submit" name="submit">'
-                );
+                        for( var command in json["pow"]["recipe"] )
+                        {
+                        html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                        // console.log( json["pow"]["recipe"][key] );
+                        for( var param in json["pow"]["recipe"][command] )
+                        {
+                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                        }
+                    }
+                    html_string += '<input type="text" name="output" value="default">'
+                    html_string += '<br><br><input type="submit">'
+                    var imageThumbs = '';
+                    for (i = 0; i < imagedata.data.length-1; i++)
+                    {
+                      var url = imagedata.data[i][" edr_source"]
+                      var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
+                      imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
+                    }
+                    $("#job").html(' \
+                        mission: \
+                        <input type="text" name="mission" value="galileo_ssi_edr" readonly> \
+                        <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
+                        <br>'
+                        + imageThumbs + html_string
+                    );
+                });
             }
 
-            else {
+            else
+            {
                 $("#job").html("<p>This mission is not supported.<p>");
             }
 
         });
     });
 
-    $(function() {
-
+    $(function()
+    {
         var $submitters = $("#job").find( "input[type=submit]" );
 
-        $("#job").submit( function( e ) {
-
+        $("#job").submit( function( e )
+        {
             //e.preventDefault();
             var form = $(this);
             var url = "/submit";
@@ -242,32 +168,31 @@
   }
   </style> -->
 
-  <script>
+<script>
     var imagedata;
 
+    function handleFileSelect(evt)
+    {
+        var file = evt.target.files[0];
 
-    function handleFileSelect(evt) {
-      var file = evt.target.files[0];
-
-      Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        complete: function(results) {
-          imagedata = results;
-
-        }
-      });
+        Papa.parse(file, {
+            header: true,
+            dynamicTyping: true,
+            complete: function(results)
+            {
+                imagedata = results;
+            }
+        });
     }
 
-    $(document).ready(function(){
-      $("#csv-file").change(handleFileSelect);
-
+    $(document).ready(function()
+    {
+        $("#csv-file").change(handleFileSelect);
     });
 
-    </script>
-      <script>
-
-      </script>
+</script>
+<script>
+</script>
 
 
 <!--
@@ -325,19 +250,25 @@
 <!--===============================================================================================-->
     <script src="vendor/select2/select2.min.js"></script>
     <script>
-        $(".js-select2").each(function(){
-            $(this).select2({
+        $(".js-select2").each(function()
+        {
+            $(this).select2(
+            {
                 minimumResultsForSearch: 20,
                 dropdownParent: $(this).next('.dropDownSelect2')
             });
 
 
-            $(".js-select2").each(function(){
-                $(this).on('select2:close', function (e){
-                    if($(this).val() == "Please chooses") {
+            $(".js-select2").each(function()
+            {
+                $(this).on('select2:close', function (e)
+                {
+                    if($(this).val() == "Please chooses")
+                    {
                         $('.js-show-service').slideUp();
                     }
-                    else {
+                    else
+                    {
                         $('.js-show-service').slideUp();
                         $('.js-show-service').slideDown();
                     }
