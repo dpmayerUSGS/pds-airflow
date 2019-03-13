@@ -112,7 +112,7 @@ default_args = {
     "retry_delay": timedelta( minutes=5 ),
 }
 
-dag = DAG( "image_generation_dag", default_args=default_args, schedule_interval="@once" )
+dag = DAG( "%s", default_args=default_args, schedule_interval="@once" )
 
 prefix = 'source activate PDS-Pipelines && python /opt/conda/envs/PDS-Pipelines/scripts/isis3VarInit.py && source activate PDS-Pipelines && '
 '''
@@ -120,7 +120,7 @@ prefix = 'source activate PDS-Pipelines && python /opt/conda/envs/PDS-Pipelines/
     for dag_object in dag_objects:
         dag_string += "\n\n" + str( dag_object )
 
-    dag_string += "\n"
+    dag_string += "\n" + dag_objects[0].get_name()
 
     for index in range( 1, len( dag_objects ) ):
         dag_string += "\n" + dag_objects[index].get_name() + ".set_upstream(" + dag_objects[index - 1].get_name() + ")"
@@ -283,9 +283,9 @@ def generate( data ):
     dag_string = generate_dag( dag_objects )
     timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
     with open( DAG_DIRECTORY + timestamp + ".py", "w" ) as job_file:
-       job_file.write( dag_string )
+       job_file.write( dag_string % timestamp )
     if( TEST ):
-        print( dag_string )
+        print( dag_string % timestamp )
 
 
 # Tests generator library import
