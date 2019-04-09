@@ -31,6 +31,10 @@ api = Api( api_app )
 
 
 class PipelineJob( Resource ):
+    """A class that represents a POST endpoint for pipeline job submission.
+
+    :returns: A REST response depending on the result of the generation process.
+    """
 
     def post( self, job_id ):
 
