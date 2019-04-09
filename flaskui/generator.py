@@ -133,7 +133,7 @@ def generate_dag( dag_objects ):
     :returns: A string containing the :term:`DAG` corresponding to the user request.
     """
 
-    dag_string = '''from airflow import :term:`DAG`
+    dag_string = '''from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from datetime import datetime, timedelta
 
