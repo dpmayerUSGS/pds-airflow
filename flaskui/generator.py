@@ -119,11 +119,6 @@ class DAGObject:
 
 
 # Generates the string for a DAG file from given list of DAG objects
-# TODO: Generate full dag for all included images
-# TODO: Move dag string
-# TODO: Move start object to object generation
-# TODO: Format dag, e.g. put spaces between parentheses
-# TODO: Place name of dag in dag
 def generate_dag( dag_objects ):
     """A function that converts reformatted user request data into a string
        representation of an executable :term:`DAG`.
@@ -159,7 +154,7 @@ prefix = 'source activate PDS-Pipelines && python /opt/conda/envs/PDS-Pipelines/
     dag_string += "\n" + dag_objects[0].get_name()
 
     for index in range( 1, len( dag_objects ) ):
-        dag_string += "\n" + dag_objects[index].get_name() + ".set_upstream(" + dag_objects[index - 1].get_name() + ")"
+        dag_string += "\n" + dag_objects[index].get_name() + ".set_upstream( " + dag_objects[index - 1].get_name() + " )"
 
     return dag_string
 
@@ -328,11 +323,12 @@ def get_commands_from_json( recipe ):
 
 
 # Generates a pipeline job
-# TODO: Improve identification of job
-# TODO: Change data to recipe
 # Parameter is JSON recipe
 def generate( data ):
     """A function that drives the generation process.
+
+    TODO:
+        * Improve identification of job.
 
     :param data: Original user request data.
     :returns: Success or failure status of generation.
