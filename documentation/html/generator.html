@@ -85,6 +85,8 @@ functions can result in the pipeline failing to operate.</p>
 <dt id="generator.generate">
 <code class="descclassname">generator.</code><code class="descname">generate</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.generate" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function that drives the generation process.</p>
+<p>In the case of generation returning a parameter error, this function will
+signal the REST API of the error.</p>
 <dl class="simple">
 <dt>TODO:</dt><dd><ul class="simple">
 <li><p>Improve identification of job.</p></li>
@@ -104,10 +106,12 @@ functions can result in the pipeline failing to operate.</p>
 <dl class="function">
 <dt id="generator.get_commands_from_json">
 <code class="descclassname">generator.</code><code class="descname">get_commands_from_json</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.get_commands_from_json" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><dl>
 <dt>A function that reformats user request data to make it easier to convert</dt><dd><p>this data to a final, executable <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a>. Before making changes to this
 function, make sure to test your changes using
 <code class="xref py py-func docutils literal notranslate"><span class="pre">get_commands_frome_filename()</span></code>.</p>
+<p>In the case of a job request containing invalid parameters, generation
+will stop to return a parameter error.</p>
 </dd>
 </dl>
 <dl class="field-list simple">

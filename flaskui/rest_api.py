@@ -39,6 +39,9 @@ class PipelineJob( Resource ):
         also contains a routine for testing the communication of the API to the
         generator library.
 
+        In the case of a job request containing invalid parameters, the REST API
+        will report the error to the UI.
+
         TODO:
             * Rework identifier for generation failure due to parameter error.
 

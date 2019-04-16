@@ -268,6 +268,9 @@ def get_commands_from_json( request ):
        function, make sure to test your changes using
        :func:`get_commands_frome_filename`.
 
+       In the case of a job request containing invalid parameters, generation
+       will stop to return a parameter error.
+
     :param json: A JSON object representation of a user's job request.
     :returns: A reformatted user request.
     """
@@ -359,6 +362,9 @@ def get_commands_from_json( request ):
 # Parameter is JSON recipe
 def generate( data ):
     """A function that drives the generation process.
+
+    In the case of generation returning a parameter error, this function will
+    signal the REST API of the error.
 
     TODO:
         * Improve identification of job.

@@ -67,6 +67,8 @@ retrieved from the local ui.html file.</p>
 function parses the user request form, retrieving the user request data.
 This data is then organized into a dictionary to be sent in a REST
 POST request to the REST API.</p>
+<p>In the case of a job request containing invalid parameters, the user will
+be sent to an error page, asking them to redo their request.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The HTML for a thank you page.</p>
@@ -114,6 +116,8 @@ command.</p>
 <dd><p>A function to handle requests made to the REST API. This function
 also contains a routine for testing the communication of the API to the
 generator library.</p>
+<p>In the case of a job request containing invalid parameters, the REST API
+will report the error to the UI.</p>
 <dl class="simple">
 <dt>TODO:</dt><dd><ul class="simple">
 <li><p>Rework identifier for generation failure due to parameter error.</p></li>

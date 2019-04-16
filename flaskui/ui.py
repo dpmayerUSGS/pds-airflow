@@ -47,6 +47,9 @@ def submit():
        This data is then organized into a dictionary to be sent in a REST
        POST request to the REST API.
 
+       In the case of a job request containing invalid parameters, the user will
+       be sent to an error page, asking them to redo their request.
+
        :returns: The HTML for a thank you page.
     """
 
