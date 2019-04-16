@@ -32,27 +32,36 @@ api = Api( api_app )
 
 class PipelineJob( Resource ):
     """A class that represents a POST endpoint for pipeline job submission.
-
-    :returns: A REST response depending on the result of the generation process.
     """
 
     def post( self, job_id ):
+        """A function to handle requests made to the REST API. This function
+        also contains a routine for testing the communication of the API to the
+        generator library.
+
+        In the case of a job request containing invalid parameters, the REST API
+        will report the error to the UI.
+
+        TODO:
+            * Rework identifier for generation failure due to parameter error.
+
+        :param job_id: A job identifier in the form of the timestamp of when the job request was first made.
+        :returns: A REST response depending on the result of the generation process.
+        """
 
         if( job_id == "test" ):
             try:
                 print( generator.test() )
             except:
-                print( "Test failed." )
                 return { "Response": "Test failed." }
 
             return { "Response": generator.test() }
 
         if( job_id == "submit" ):
             try:
-                print(request.data)
-                generator.generate( json.loads( request.data ) )
+                if( not generator.generate( json.loads( request.data ) ) ):
+                    return { "Response": "parameter error" }
             except:
-                print( "Generation: failed." )
                 return { "Response": "Generation failed." }
 
             return { "Response": "Generation successful." }

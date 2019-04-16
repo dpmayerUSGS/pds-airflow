@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Front End &#8212; Pypline 1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Generator" href="generator.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="glossary.html" title="Glossary"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="generator.html" title="Generator"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pypline 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="front-end">
+<h1>Front End<a class="headerlink" href="#front-end" title="Permalink to this headline">¶</a></h1>
+<p>The user facing section of this project is made up of two parts: a
+<a class="reference internal" href="#ui-reference"><span class="std std-ref">User Interface</span></a> and a <a class="reference internal" href="#rest-reference"><span class="std std-ref">REST API</span></a>.</p>
+<div class="section" id="user-interface">
+<span id="ui-reference"></span><h2>User Interface<a class="headerlink" href="#user-interface" title="Permalink to this headline">¶</a></h2>
+<p>The User Interface is the primary user facing aspect of this project. Providing
+users a simple method of submitting pipeline job requests. The page markdown is
+retrieved from the local ui.html file.</p>
+<dl class="function">
+<dt id="ui.mission_page">
+<code class="descclassname">ui.</code><code class="descname">mission_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ui.mission_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple function that retreives the pipeline job request page HTML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The HTML for the pipeline job request page.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ui.submit">
+<code class="descclassname">ui.</code><code class="descname">submit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ui.submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function called upon submission of a pipeline job request. This
+function parses the user request form, retrieving the user request data.
+This data is then organized into a dictionary to be sent in a REST
+POST request to the REST API.</p>
+<p>In the case of a job request containing invalid parameters, the user will
+be sent to an error page, asking them to redo their request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The HTML for a thank you page.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ui.download">
+<code class="descclassname">ui.</code><code class="descname">download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ui.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function called to provide the user with a zipped archive of their
+processed images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A .zip archive containing processed images.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ui.dag_test">
+<code class="descclassname">ui.</code><code class="descname">dag_test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ui.dag_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to test the ability of the UI to send a request to the REST
+API, using a pregenerated request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A simple message to indicate a successful test.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="rest-api">
+<span id="rest-reference"></span><h2>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h2>
+<p>The REST API is a simple endpoint that can be interacted with either indirectly
+through the User Interface or through a direct request, such as with a curl
+command.</p>
+<dl class="class">
+<dt id="rest_api.PipelineJob">
+<em class="property">class </em><code class="descclassname">rest_api.</code><code class="descname">PipelineJob</code><a class="headerlink" href="#rest_api.PipelineJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that represents a POST endpoint for pipeline job submission.</p>
+<dl class="method">
+<dt id="rest_api.PipelineJob.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_api.PipelineJob.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to handle requests made to the REST API. This function
+also contains a routine for testing the communication of the API to the
+generator library.</p>
+<p>In the case of a job request containing invalid parameters, the REST API
+will report the error to the UI.</p>
+<dl class="simple">
+<dt>TODO:</dt><dd><ul class="simple">
+<li><p>Rework identifier for generation failure due to parameter error.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>job_id</strong> – A job identifier in the form of the timestamp of when the job request was first made.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A REST response depending on the result of the generation process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Front End</a><ul>
+<li><a class="reference internal" href="#user-interface">User Interface</a></li>
+<li><a class="reference internal" href="#rest-api">REST API</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="generator.html"
+                        title="previous chapter">Generator</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="glossary.html"
+                        title="next chapter">Glossary</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/frontend.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="glossary.html" title="Glossary"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="generator.html" title="Generator"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pypline 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Connor Schwirian, Nick Anderson, Austin Collins, Abdulaziz Zarie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.0.
+    </div>
+  </body>
+</html>

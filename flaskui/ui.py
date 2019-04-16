@@ -47,6 +47,9 @@ def submit():
        This data is then organized into a dictionary to be sent in a REST
        POST request to the REST API.
 
+       In the case of a job request containing invalid parameters, the user will
+       be sent to an error page, asking them to redo their request.
+
        :returns: The HTML for a thank you page.
     """
 
@@ -100,10 +103,13 @@ def submit():
     recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list, "filename": filename }
     recipe_string = json.dumps( recipe )
     recipe_json = json.loads( recipe_string )
-    requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
+    response = requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
+    print( response.text )
+    response_json = json.loads( response.text )
+    if( response_json["Response"] == "parameter error" ):
+        return render_template( "error.html", text=filename )
 
-    page_string = ""
-    return render_template("thank_you.html", text=filename)
+    return render_template("thank_you.html", text=filename )
 
 @ui_app.route( "/handle_data", methods=["POST"] )
 def handle_data():
@@ -126,6 +132,11 @@ def test():
 # TODO: Make curling nicer
 @ui_app.route( "/dagtest" )
 def dag_test():
+    """A function to test the ability of the UI to send a request to the REST
+    API, using a pregenerated request.
+
+    :returns: A simple message to indicate a successful test.
+    """
 
     with open( "REST_json.json", "r" ) as recipe_file:
         recipe_json = json.load( recipe_file )
@@ -136,6 +147,11 @@ def dag_test():
 
 @ui_app.route( "/download", methods=["POST"] )
 def download():
+    """A function called to provide the user with a zipped archive of their
+    processed images.
+
+    :returns: A .zip archive containing processed images.
+    """
     data = request.get_json()
     filename = data['file'][0]
     exists = os.path.isfile('./dags/' + filename + '.zip')

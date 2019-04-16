@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <title>Pypline</title>
+      <script src="https://fastcdn.org/Papa-Parse/4.1.2/papaparse.min.js"></script>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+      <link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/vendor/noui/nouislider.min.css">
+  <!--===============================================================================================-->
+      <link rel="stylesheet" type="text/css" href="static/css/util.css">
+      <link rel="stylesheet" type="text/css" href="static/css/main.css">
+  <!--===============================================================================================-->
+
+  <!-- OLd UI SCRIPTS -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+  <style>
+
+
+      input[type=text] {
+      	width: 120px;
+      	height: 24px;
+  /*		  background-color: #333333;
+  		  border-radius: 25px;*/
+
+  		  font-family: Montserrat-Medium;
+  		  font-size: 16px;
+  /*		  color: #fff;
+  */		  line-height: 1.2;
+  		  text-align: center;
+
+  		  -webkit-transition: all 0.4s;
+  		  -o-transition: all 0.4s;
+  		  -moz-transition: all 0.4s;
+  		  transition: all 0.4s;
+        background-color: #333333;
+        color: #fff;
+
+
+      }
+      input[type=submit] {
+      	  display: -webkit-box;
+  		  display: -webkit-flex;
+  		  display: -moz-box;
+  		  display: -ms-flexbox;
+  		  display: flex;
+  		  justify-content: center;
+  		  align-items: center;
+  		  padding: 0 20px;
+
+  		  height: 50px;
+  		  background-color: #333333;
+  		  border-radius: 25px;
+
+  		  font-family: Montserrat-Medium;
+  		  font-size: 16px;
+  		  color: #fff;
+  		  line-height: 1.2;
+
+  		  -webkit-transition: all 0.4s;
+  		  -o-transition: all 0.4s;
+  		  -moz-transition: all 0.4s;
+  		  transition: all 0.4s;
+      }
+
+      input[type=]
+      #sources {
+      	width: 200px;
+      }
+      #missions {
+      	width: 300px;
+      }
+
+      #job {
+      	padding: 20px;
+      	background-color: #fff;
+  		 border-radius: 25px;
+       display: none;
+
+      }
+
+      #job:after {
+      	/*padding: 20px;*/
+      	padding-top: 100px;
+      	padding-bottom: 100px;
+      	padding-left: 200px;
+      }
+
+      #instructions {
+      	display: none;
+      }
+
+      .helpImg {
+      	width: 64%;
+      	height: 64%;
+      }
+
+      .helpImg1 {
+      	width: 80%;
+      	height: 70%;
+      }
+
+      .helpImg5 {
+      	height: 30%;
+      }
+
+      .contact100-form-title{
+       color: white;
+      }
+
+      #sources{
+        display: none;
+      }
+
+      .container-contact100 {
+    background-image: url("https://www.rocketlawyer.com/blog/wp-content/uploads/2012/08/ThinkstockPhotos-89614571-c2.jpg");
+     background-repeat: no-repeat;
+     background-size: 100%;
+     background-color: black;
+   }
+
+  </style>
+<script type="text/javascript">
+$(function() {
+    $("#submission").delay(60000).fadeIn(500);
+});
+
+ var filename = '{{text|safe}}';
+
+function downloadCheck(filename) {
+    var postData = {file: filename}
+    $.ajax({
+        url: "/download",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(postData)
+    });
+}
+
+var timer = setInterval(downloadCheck([filename]), 15000);
+
+</script>
+</head>
+<body>
+  <div class="container-contact100">
+      <div class="wrap-contact100">
+        <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
+            <span class="contact100-form-title">
+                Pypline
+            </span>
+        <div class="wrap-input100 input100-select bg1">
+	<div class="header1">
+		<h1>We're Sorry</h1>
+	</div>
+
+	<div class="submission_div" id="submission">
+		There was an error with your request. Please double-check that you are
+        using valid parameters.
+	</div>
+
+	<div>
+
+		<ul>
+			<li><a href="/">Go Back to Submission Page</a></li>
+		</ul>
+	</div>
+</div>
+</div>
+</div>
+
+  <!--===============================================================================================-->
+      <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/animsition/js/animsition.min.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/bootstrap/js/popper.js"></script>
+      <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!--===============================================================================================-->
+      <script src="vendor/select2/select2.min.js"></script>
+      <script>
+          $(".js-select2").each(function()
+          {
+              $(this).select2(
+              {
+                  minimumResultsForSearch: 20,
+                  dropdownParent: $(this).next('.dropDownSelect2')
+              });
+
+
+              $(".js-select2").each(function()
+              {
+                  $(this).on('select2:close', function (e)
+                  {
+                      if($(this).val() == "Please chooses")
+                      {
+                          $('.js-show-service').slideUp();
+                      }
+                      else
+                      {
+                          $('.js-show-service').slideUp();
+                          $('.js-show-service').slideDown();
+                      }
+                  });
+              });
+          })
+      </script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/daterangepicker/moment.min.js"></script>
+      <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/countdowntime/countdowntime.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/noui/nouislider.min.js"></script>
+      <script>
+          var filterBar = document.getElementById('filter-bar');
+
+          noUiSlider.create(filterBar, {
+              start: [ 1500, 3900 ],
+              connect: true,
+              range: {
+                  'min': 1500,
+                  'max': 7500
+              }
+          });
+
+          var skipValues = [
+          document.getElementById('value-lower'),
+          document.getElementById('value-upper')
+          ];
+
+          filterBar.noUiSlider.on('update', function( values, handle ) {
+              skipValues[handle].innerHTML = Math.round(values[handle]);
+              $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+              $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+          });
+      </script>
+  <!--===============================================================================================-->
+      <script src="static/js/main.js"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-23581568-13');
+  </script>
+
+  <!--
+      End UI Sample transition
+
+
+  <div class='container'>
+      <form id="mission">
+          <select name="mission">
+              <option value="mro">MRO</option>
+              <option value="gssi">GSSI</option>
+              <option value="Apollo">Apollo</option>
+              <option value="notsupported">Cassini</option>
+          </select>
+          <input type="submit" value="Select">
+      </form>
+      <form id="job" action="/submit" method="post">
+
+      </form> -->
+
+  </div>
+
+  <!--===============================================================================================-->
+      <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/animsition/js/animsition.min.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/bootstrap/js/popper.js"></script>
+      <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/select2/select2.min.js"></script>
+      <script>
+          $(".js-select2").each(function(){
+              $(this).select2({
+                  minimumResultsForSearch: 20,
+                  dropdownParent: $(this).next('.dropDownSelect2')
+              });
+
+
+              $(".js-select2").each(function(){
+                  $(this).on('select2:close', function (e){
+                      if($(this).val() == "Please chooses") {
+                          $('.js-show-service').slideUp();
+                      }
+                      else {
+                          $('.js-show-service').slideUp();
+                          $('.js-show-service').slideDown();
+                      }
+                  });
+              });
+          })
+      </script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/daterangepicker/moment.min.js"></script>
+      <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/countdowntime/countdowntime.js"></script>
+  <!--===============================================================================================-->
+      <script src="static/vendor/noui/nouislider.min.js"></script>
+      <script>
+          var filterBar = document.getElementById('filter-bar');
+
+          noUiSlider.create(filterBar, {
+              start: [ 1500, 3900 ],
+              connect: true,
+              range: {
+                  'min': 1500,
+                  'max': 7500
+              }
+          });
+
+          var skipValues = [
+          document.getElementById('value-lower'),
+          document.getElementById('value-upper')
+          ];
+
+          filterBar.noUiSlider.on('update', function( values, handle ) {
+              skipValues[handle].innerHTML = Math.round(values[handle]);
+              $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
+              $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
+          });
+      </script>
+  <!--===============================================================================================-->
+      <script src="static/js/main.js"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-23581568-13');
+  </script>
+</body>
+</html>
