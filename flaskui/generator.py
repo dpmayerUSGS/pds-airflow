@@ -191,7 +191,6 @@ def get_commands_from_filename( recipe_filename ):
     with open( recipe_filename, "r", ) as file:
         request = json.load( file )
 
-
     mission = request["mission"]
     output = request["output"]
     tasks = request["tasks"]
@@ -262,7 +261,7 @@ def get_commands_from_filename( recipe_filename ):
 
 
 # Gets a list of DAG objects from a json file containing UI output, using json object
-def get_commands_from_json( json ):
+def get_commands_from_json( request, timestamp ):
     """A function that reformats user request data to make it easier to convert
        this data to a final, executable :term:`DAG`. Before making changes to this
        function, make sure to test your changes using
@@ -272,11 +271,11 @@ def get_commands_from_json( json ):
     :returns: A reformatted user request.
     """
 
-    mission = json["mission"]
-    output = json["output"]
-    tasks = json["tasks"]
-    images = json["images"]
-    sources = json["sources"]
+    mission = request["mission"]
+    output = request["output"]
+    tasks = request["tasks"]
+    images = request["images"]
+    sources = request["sources"]
 
     ouput = "/out/" + timestamp + "/"
 
@@ -365,7 +364,6 @@ def generate( data ):
     :param data: Original user request data.
     :returns: Success or failure status of generation.
     """
-
     timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
     dag_objects = get_commands_from_json( data, timestamp )
     dag_string = generate_dag( dag_objects, timestamp )
@@ -393,7 +391,9 @@ def test():
 
 if( __name__ == "__main__" and TEST ):
     timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
-    commands = get_commands_from_filename( TEST_FILE )
+    with open( TEST_FILE, "r", ) as file:
+        request = json.load( file )
+    commands = get_commands_from_json( request, timestamp )
     if commands == "parameter error":
         print( "parameter error" )
     else:
