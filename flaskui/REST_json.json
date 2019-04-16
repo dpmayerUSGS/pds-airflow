@@ -1,14 +1,1 @@
-{
-    "mission": "galileo_ssi_edr",
-    "tasks": [
-        ["gllssi2isis", [["from", "value"], ["to", "value"]]],
-        ["spiceinit", [["from", "value"], ["cksmithed", "yes"]]],
-        ["gllsiical", [["from", "value"], ["to", "value"]]],
-        ["cam2map", [["from", "value"], ["to", "value"]]],
-        ["isis2std", [["from", "value"], ["to", "value"], ["mode", "grayscale"], ["format", "png"]]]
-    ],
-    "output": "/home/images",
-    "images": [],
-    "sources": ["http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.img",
-                "http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e15/europa/c044094/7446r.img"]
-}
+{"mission": "galileo_ssi_edr", "tasks": [["gllssi2isis", [["from", "default"], ["to", "default"]]], ["spiceinit", [["from", "default"], ["cknadir", "default"], ["cksmithed", "default"]]], ["gllssical", [["from", "default"], ["to", "default"]]], ["cam2map", [["from", "default"], ["to", "default"], ["map", "default"], ["matchmap", "default"], ["pixres", "default"], ["defaultrange", "default"]]], ["isis2std", [["from", "default"], ["to", "default"], ["format", "default"], ["quality", "default"], ["stretch", "default"], ["mode", "default"]]]], "output": "default", "images": [], "sources": [" http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.img", " http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e15/europa/c044996/7446r.img"]}

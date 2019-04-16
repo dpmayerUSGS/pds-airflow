@@ -189,127 +189,103 @@ def get_commands_from_filename( recipe_filename ):
     """
 
     with open( recipe_filename, "r", ) as file:
-        json = json.load( file )
-
-    with open( recipe_filename, "r", ) as file:
-        recipe = json.load( file )
-
-        mission = json["mission"]
-        output = json["output"]
-        tasks = json["tasks"]
-        images = json["images"]
-        sources = json["sources"]
-
-        commands = []
-        dag_objects = []
-
-        if( images == [] ):
-            for source in sources:
-                images.append( source.split("/")[-1] )
-                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
-                commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
-
-        for image in images:
-            file_index = 0
-            for task in tasks:
-                parameters = task[1]
-                for index in range( len( parameters ) ):
-                    param_name = parameters[index][0]
+        request = json.load( file )
 
 
-                    default = parameters[index][1]['default']
-                    check_type = check_type = parameters[index][1]['check']
-                    if check_type == 'none':
-                        check_value = 'none'
-                    elif check_type == 'list':
-                        check_value = parameters[index][1]['check_list']
-                    elif check_type == 'file':
-                        check_value = parameters[index][1]['check_value']
-
-                    if( parameters[index][0] == "from" ):
-                        if( "2isis" in task[0] ):
-                            if(task[0] == "gllssi2isis"):
-                                parameters[index][1] = "img/" + image.split(".")[0] + ".lbl"
-                            else:
-                                parameters[index][1] = "img/" + image
-                        else:
-                            parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
-                    elif( parameters[index][0] == "to" ):
-                        file_index += 1
-                        if( task[0] == "isis2std" ):
-                            parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + "." + parameters[-1][1]
-                        else:
-                            parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
-
-                commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
-
-        for command in commands:
-            dag_objects.append( DAGObject( command ) )
-
-        return dag_objects
-
-
-# DEPRECATED
-# Gets a list of DAG objects from a json file containing UI output, using file
-def get_commands_from_file( recipe_file ):
-
-    recipe = json.load( file )
-
-    mission = recipe["mission"]
-    output = recipe["output"]
-    tasks = recipe["tasks"]
-    images = recipe["images"]
-    sources = recipe["sources"]
+    mission = request["mission"]
+    output = request["output"]
+    tasks = request["tasks"]
+    images = request["images"]
+    sources = request["sources"]
 
     commands = []
     dag_objects = []
 
+    with open( "static/recipes/" + mission + ".json", "r", ) as file:
+        recipe = json.load( file )
+    pow = recipe["pow"]["recipe"]
+
     if( images == [] ):
         for source in sources:
             images.append( source.split("/")[-1] )
-            commands.append( WGETCommandObject( source ) )
+            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
+            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
 
     for image in images:
+        file_index = 0
         for task in tasks:
-            print( task )
             parameters = task[1]
+            check_task = pow[task[0]]
+
             for index in range( len( parameters ) ):
+                param_name = parameters[index][0]
+                param_value = parameters[index][1]
+
+                check_type = check_task[param_name]["check"]
+                if check_type == 'none':
+                    check_value = 'none'
+                elif check_type == 'list':
+                    check_value = check_task[param_name]['check_list']
+                    if param_value.upper() not in check_value:
+                        return "parameter error"
+                elif check_type == 'file':
+                    check_value = check_task[param_name]['check_value']
+                    if type(param_value) != str:
+                        return "parameter error"
+                elif check_type == 'range':
+                    check_value = check_task[param_name]['check_range']
+                    if param_value != "default":
+                        if param_value < check_value[0] or param_value > check_value[1]:
+                            return "paramter error"
+
                 if( parameters[index][0] == "from" ):
                     if( "2isis" in task[0] ):
-                        parameters[index][1] = "/img/" + image
+                        if(task[0] == "gllssi2isis"):
+                            parameters[index][1] = "img/" + image.split(".")[0] + ".lbl"
+                        else:
+                            parameters[index][1] = "img/" + image
                     else:
-                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + ".cub"
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
                 elif( parameters[index][0] == "to" ):
-                    parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + ".cub"
+                    file_index += 1
+                    if( task[0] == "isis2std" ):
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + "." + parameters[-1][1]
+                    else:
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
 
-            commands.append( CommandObject( task[0], task[1] ) )
+            commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
     for command in commands:
         dag_objects.append( DAGObject( command ) )
+
     return dag_objects
 
 
 # Gets a list of DAG objects from a json file containing UI output, using json object
-def get_commands_from_json( recipe ):
+def get_commands_from_json( json ):
     """A function that reformats user request data to make it easier to convert
        this data to a final, executable :term:`DAG`. Before making changes to this
        function, make sure to test your changes using
        :func:`get_commands_frome_filename`.
 
-    :param recipe: A JSON object representation of a user's job request.
+    :param json: A JSON object representation of a user's job request.
     :returns: A reformatted user request.
     """
 
-    mission = recipe["mission"]
-    output = recipe["output"]
-    tasks = recipe["tasks"]
-    images = recipe["images"]
-    sources = recipe["sources"]
+    mission = json["mission"]
+    output = json["output"]
+    tasks = json["tasks"]
+    images = json["images"]
+    sources = json["sources"]
 
     ouput = "/out/" + timestamp + "/"
 
     commands = []
     dag_objects = []
+
+    with open( "static/recipes/" + mission + ".json", "r", ) as file:
+        recipe = json.load( file )
+    pow = recipe["pow"]["recipe"]
 
     if( images == [] ):
         for source in sources:
@@ -324,18 +300,30 @@ def get_commands_from_json( recipe ):
         # Iterates over the supplied ISIS commands for the specified image.
         for task in tasks:
             parameters = task[1]
+            check_task = pow[task[0]]
+
             # Iterates over the parameters of the specified ISIS command.
             for index in range( len( parameters ) ):
                 param_name = parameters[index][0]
-                default = parameters[index][1]['default']
-                check_type = check_type = parameters[index][1]['check']
+                param_value = parameters[index][1]
+
+                check_type = check_task[param_name]["check"]
                 if check_type == 'none':
                     check_value = 'none'
                 elif check_type == 'list':
-                    check_value = parameters[index][1]['check_list']
+                    check_value = check_task[param_name]['check_list']
+                    if param_value.upper() not in check_value:
+                        return "parameter error"
                 elif check_type == 'file':
-                    check_value = parameters[index][1]['check_value']
-                print(default + ' ' + check_type + ' ' + check_value)
+                    check_value = check_task[param_name]['check_value']
+                    if type(param_value) != str:
+                        return "parameter error"
+                elif check_type == 'range':
+                    check_value = check_task[param_name]['check_range']
+                    if param_value != "default":
+                        if param_value < check_value[0] or param_value > check_value[1]:
+                            return "paramter error"
+
                 if( "from" in parameters[index][0] ):
                     # Deals with the fact that some recipes have from_
                     # as a parameter, despite it not being valid.
@@ -406,5 +394,8 @@ def test():
 if( __name__ == "__main__" and TEST ):
     timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
     commands = get_commands_from_filename( TEST_FILE )
-    dag = generate_dag( commands )
-    print( dag )
+    if commands == "parameter error":
+        print( "parameter error" )
+    else:
+        dag = generate_dag( commands )
+        print( dag )
