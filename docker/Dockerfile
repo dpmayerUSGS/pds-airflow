@@ -24,4 +24,7 @@ RUN echo "python /opt/conda/envs/PDS-Pipelines/scripts/isis3VarInit.py" >> /root
 RUN echo "source activate PDS-Pipelines" >> /root/.bashrc
 
 ADD entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
 ENTRYPOINT /root/entrypoint.sh && /bin/bash
+
+RUN apt-get install -y wget zip
