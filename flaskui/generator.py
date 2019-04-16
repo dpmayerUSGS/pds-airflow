@@ -196,6 +196,7 @@ def get_commands_from_filename( recipe_filename ):
     tasks = request["tasks"]
     images = request["images"]
     sources = request["sources"]
+    timestamp = request["filename"]
 
     commands = []
     dag_objects = []
@@ -257,11 +258,11 @@ def get_commands_from_filename( recipe_filename ):
     for command in commands:
         dag_objects.append( DAGObject( command ) )
 
-    return dag_objects
+    return dag_objects, timestamp
 
 
 # Gets a list of DAG objects from a json file containing UI output, using json object
-def get_commands_from_json( request, timestamp ):
+def get_commands_from_json( request ):
     """A function that reformats user request data to make it easier to convert
        this data to a final, executable :term:`DAG`. Before making changes to this
        function, make sure to test your changes using
@@ -276,6 +277,7 @@ def get_commands_from_json( request, timestamp ):
     tasks = request["tasks"]
     images = request["images"]
     sources = request["sources"]
+    timestamp = request["filename"]
 
     ouput = "/out/" + timestamp + "/"
 
@@ -350,7 +352,7 @@ def get_commands_from_json( request, timestamp ):
     for command in commands:
         dag_objects.append( DAGObject( command ) )
 
-    return dag_objects
+    return dag_objects, timestamp
 
 
 # Generates a pipeline job
@@ -364,8 +366,7 @@ def generate( data ):
     :param data: Original user request data.
     :returns: Success or failure status of generation.
     """
-    timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
-    dag_objects = get_commands_from_json( data, timestamp )
+    dag_objects, timestamp = get_commands_from_json( data )
     dag_string = generate_dag( dag_objects, timestamp )
     with open( DAG_DIRECTORY + timestamp + ".py", "w" ) as job_file:
        job_file.write( dag_string % timestamp )
@@ -390,10 +391,9 @@ def test():
 
 
 if( __name__ == "__main__" and TEST ):
-    timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
     with open( TEST_FILE, "r", ) as file:
         request = json.load( file )
-    commands = get_commands_from_json( request, timestamp )
+    commands, timestamp = get_commands_from_json( request )
     if commands == "parameter error":
         print( "parameter error" )
     else:

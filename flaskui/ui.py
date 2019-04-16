@@ -6,7 +6,7 @@
 import os
 import json
 import requests
-
+from datetime import datetime
 
 from flask import Flask, request, jsonify, redirect, url_for, render_template
 from rest_api import REST_API_PORT
@@ -96,7 +96,7 @@ def submit():
         elif( name in included_program_list ):
             program_list[-1][1].append( [attribute, form[key]] )
 
-    recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list }
+    recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list, "filename": datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" ) }
     recipe_string = json.dumps( recipe )
     recipe_json = json.loads( recipe_string )
     requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
