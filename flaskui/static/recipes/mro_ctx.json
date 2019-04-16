@@ -43,29 +43,36 @@
     "pow": {
         "recipe": {
             "mroctx2isis": {
-                "from_": "value",
-                "to": "value"
+                "from": { "default": "value", "check": "none" },
+                "to": { "default": "value", "check": "none" }
             },
             "spiceinit": {
-                "from_": "value",
-                "cknadir": "yes",
-                "cksmithed": "yes"
+                "from": { "default": "value", "check": "none" },
+                "cknadir": { "default": "yes", "check": "list", "check_list": ["yes", "no", "default"] },
+                "cksmithed": { "default": "yes", "check": "list", "check_list": ["yes", "no", "default"] }
             },
             "ctxcal": {
-                "from_": "value",
-                "to": "value"
+                "from": { "default": "value", "check": "none" },
+                "to": { "default": "value", "check": "none" }
             },
             "ctxevenodd": {
-                "from_": "value",
-                "to": "value"
+                "from": { "default": "value", "check": "none" },
+                "to": { "default": "value", "check": "none" }
             },
             "cam2map": {
-                "from": "value",
-                "to": "value",
-                "map": "value",
-                "matchmap": "no",
-                "pixres": "value",
-                "defaultrange": "value"
+                "from": { "default": "value", "check": "none" },
+                "to": { "default": "value", "check": "none" },
+                "map": { "default": "value", "check": "file", "check_value": "default" },
+                "matchmap": { "default": "no", "check": "list", "check_list": ["yes", "no", "default"] },
+                "pixres": { "default": "value", "check": "list", "check_list": ["CAMERA", "MAP", "MPP", "PPD", "default"] },
+                "defaultrange": { "default": "value", "check": "list", "check_list": ["MINIMIZE", "CAMERA", "MAP", "default"] }
+            },
+            "isis2std": {
+                "from_": { "default": "value", "check": "none" },
+                "to": { "default": "value", "check": "none" },
+                "format": { "default": "jpeg", "check": "list", "check_list": ["png", "bmp", "tiff", "jpeg", "jp2"] },
+                "quality": { "default": "60", "check": "range", "check_range": [-1, 100],
+                "stretch": {"default": "linear", "check": "list", "check_list": ["LINEAR", "PIECEWISE", "MANUAL"]}
             }
         }
     },

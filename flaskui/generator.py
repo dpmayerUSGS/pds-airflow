@@ -189,13 +189,16 @@ def get_commands_from_filename( recipe_filename ):
     """
 
     with open( recipe_filename, "r", ) as file:
+        json = json.load( file )
+
+    with open( recipe_filename, "r", ) as file:
         recipe = json.load( file )
 
-        mission = recipe["mission"]
-        output = recipe["output"]
-        tasks = recipe["tasks"]
-        images = recipe["images"]
-        sources = recipe["sources"]
+        mission = json["mission"]
+        output = json["output"]
+        tasks = json["tasks"]
+        images = json["images"]
+        sources = json["sources"]
 
         commands = []
         dag_objects = []
@@ -211,6 +214,18 @@ def get_commands_from_filename( recipe_filename ):
             for task in tasks:
                 parameters = task[1]
                 for index in range( len( parameters ) ):
+                    param_name = parameters[index][0]
+
+
+                    default = parameters[index][1]['default']
+                    check_type = check_type = parameters[index][1]['check']
+                    if check_type == 'none':
+                        check_value = 'none'
+                    elif check_type == 'list':
+                        check_value = parameters[index][1]['check_list']
+                    elif check_type == 'file':
+                        check_value = parameters[index][1]['check_value']
+
                     if( parameters[index][0] == "from" ):
                         if( "2isis" in task[0] ):
                             if(task[0] == "gllssi2isis"):
@@ -291,7 +306,7 @@ def get_commands_from_json( recipe ):
     images = recipe["images"]
     sources = recipe["sources"]
 
-    ouput = "out/" + timestamp + "/"
+    ouput = "/out/" + timestamp + "/"
 
     commands = []
     dag_objects = []
@@ -311,6 +326,16 @@ def get_commands_from_json( recipe ):
             parameters = task[1]
             # Iterates over the parameters of the specified ISIS command.
             for index in range( len( parameters ) ):
+                param_name = parameters[index][0]
+                default = parameters[index][1]['default']
+                check_type = check_type = parameters[index][1]['check']
+                if check_type == 'none':
+                    check_value = 'none'
+                elif check_type == 'list':
+                    check_value = parameters[index][1]['check_list']
+                elif check_type == 'file':
+                    check_value = parameters[index][1]['check_value']
+                print(default + ' ' + check_type + ' ' + check_value)
                 if( "from" in parameters[index][0] ):
                     # Deals with the fact that some recipes have from_
                     # as a parameter, despite it not being valid.
@@ -379,6 +404,7 @@ def test():
 
 
 if( __name__ == "__main__" and TEST ):
+    timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
     commands = get_commands_from_filename( TEST_FILE )
     dag = generate_dag( commands )
     print( dag )
