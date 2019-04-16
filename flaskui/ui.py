@@ -31,6 +31,10 @@ ui_app = Flask( __name__ + "_ui" )
 
 @ui_app.route( "/" )
 def mission_page():
+    """A simple function that retreives the pipeline job request page HTML.
+
+    :returns: The HTML for the pipeline job request page.
+    """
 
     with open( "ui.html", "r" ) as html:
         return html.read()
@@ -38,6 +42,13 @@ def mission_page():
 
 @ui_app.route( "/submit", methods=["POST"] )
 def submit():
+    """A function called upon submission of a pipeline job request. This
+       function parses the user request form, retrieving the user request data.
+       This data is then organized into a dictionary to be sent in a REST
+       POST request to the REST API.
+
+       :returns: The HTML for a thank you page.
+    """
 
     mission = ""
     output = ""

@@ -9,7 +9,7 @@ import copy
 from datetime import datetime
 
 # May be unnecessary
-#import sys
+# import sys
 
 
 
@@ -31,13 +31,21 @@ DAG_DIRECTORY = "./dags/"
 
 
 class CommandObject:
+    """An object that holds an ISIS command for easy representation in a :term:`DAG`.
+    """
 
     def __init__( self, name, command, parameters ):
+        """Makes things.
+        """
+
         self.command = command
         self.parameters = parameters
         self.name = name
 
     def __str__( self ):
+        """Makes the things a string.
+        """
+
         output = self.command
 
         for parameter in self.parameters:
@@ -51,23 +59,41 @@ class CommandObject:
 
 
 class WGETCommandObject:
+    """An object that holds a wget command, used for pulling mission imagery
+       from the USGS archive.
+    """
 
     def __init__( self, name, parameter ):
+        """Makes things.
+        """
+
         self.command = "cd /img && wget"
         self.parameter = parameter
         self.name = "wget" + name
 
     def __str__( self ):
+        """Makes things a string.
+        """
+
         return self.command + " " + self.parameter
 
 
 class DAGObject:
+    """An object that contains a command object with additional behavior for
+       representing the command in a :term:`DAG`.
+    """
 
     # Command is a CommandObject
     def __init__( self, command ):
+        """Makes things.
+        """
+
         self.command = command
 
     def __str__( self ):
+        """Makes things a string.
+        """
+
         output = '''%s = BashOperator(
     task_id="%s",
     bash_command= prefix + "%s",
@@ -80,6 +106,9 @@ class DAGObject:
         return output
 
     def get_name( self ):
+        """A helper function that retrieves a command's name.
+        """
+
         return self.command.name
 
 
@@ -90,12 +119,14 @@ class DAGObject:
 
 
 # Generates the string for a DAG file from given list of DAG objects
-# TODO: Generate full dag for all included images
-# TODO: Move dag string
-# TODO: Move start object to object generation
-# TODO: Format dag, e.g. put spaces between parentheses
-# TODO: Place name of dag in dag
-def generate_dag( dag_objects, timestamp ):
+def generate_dag( dag_objects ):
+    """A function that converts reformatted user request data into a string
+       representation of an executable :term:`DAG`.
+
+    :param dag_objects: Reformatted user request data.
+
+    :returns: A string containing the :term:`DAG` corresponding to the user request.
+    """
 
     dag_string = '''from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
@@ -138,7 +169,7 @@ zip = BashOperator(
     dag_string += "\n" + dag_objects[0].get_name() + ".set_upstream(mkdir)"
 
     for index in range( 1, len( dag_objects ) ):
-        dag_string += "\n" + dag_objects[index].get_name() + ".set_upstream(" + dag_objects[index - 1].get_name() + ")"
+        dag_string += "\n" + dag_objects[index].get_name() + ".set_upstream( " + dag_objects[index - 1].get_name() + " )"
 
     dag_string += "\nzip.set_upstream(" + dag_objects[len( dag_objects ) - 1].get_name() + ")"
 
@@ -148,6 +179,14 @@ zip = BashOperator(
 # FOR TESTING
 # Gets a list of DAG objects from a json file containing UI output, using filename
 def get_commands_from_filename( recipe_filename ):
+    """A function for testing :term:`DAG` generation based on a fixed user request found
+       in a local JSON file. Used for testing potential changes to
+       :func:`get_commands_from_json` as well as ensuring
+       :func:`generate_dag` is operating correctly.
+
+    :param recipe_filename: The name of a JSON file containing a user request.
+    :returns: A reformatted user request.
+    """
 
     with open( recipe_filename, "r", ) as file:
         recipe = json.load( file )
@@ -236,7 +275,15 @@ def get_commands_from_file( recipe_file ):
 
 
 # Gets a list of DAG objects from a json file containing UI output, using json object
-def get_commands_from_json( recipe, timestamp ):
+def get_commands_from_json( recipe ):
+    """A function that reformats user request data to make it easier to convert
+       this data to a final, executable :term:`DAG`. Before making changes to this
+       function, make sure to test your changes using
+       :func:`get_commands_frome_filename`.
+
+    :param recipe: A JSON object representation of a user's job request.
+    :returns: A reformatted user request.
+    """
 
     mission = recipe["mission"]
     output = recipe["output"]
@@ -284,6 +331,8 @@ def get_commands_from_json( recipe, timestamp ):
                     else:
                         parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
 
+            # Performs a deepcopy to retrieve parameters for individual
+            # commands, preventing other commands from overwriting them.
             commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
     for command in commands:
@@ -293,10 +342,16 @@ def get_commands_from_json( recipe, timestamp ):
 
 
 # Generates a pipeline job
-# TODO: Improve identification of job
-# TODO: Change data to recipe
 # Parameter is JSON recipe
 def generate( data ):
+    """A function that drives the generation process.
+
+    TODO:
+        * Improve identification of job.
+
+    :param data: Original user request data.
+    :returns: Success or failure status of generation.
+    """
 
     timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
     dag_objects = get_commands_from_json( data, timestamp )
@@ -309,6 +364,10 @@ def generate( data ):
 
 # Tests generator library import
 def test():
+    """A function for testing the ability of the REST API to respond to requests.
+
+    :returns: Successful test response.
+    """
 
     return "Test successful response."
 
