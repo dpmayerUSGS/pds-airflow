@@ -59,6 +59,8 @@ db.sqlite3
 # Flask stuff:
 instance/
 .webassets-cache
+flaskui/dags
+flaskui/source
 
 # Scrapy stuff:
 .scrapy

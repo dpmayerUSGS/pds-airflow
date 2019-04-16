@@ -1,0 +1,41 @@
+Glossary
+========
+
+.. glossary::
+
+    DAG
+        DAGs, in the context of this project, refer to the concept developed by
+        Airflow and utilized in its scheduling solution. For the purposes of
+        this project, individuals DAGs represent individual pipeline jobs.
+
+        In Airflow, a DAG – or a Directed Acyclic Graph – is a collection of all
+        the tasks you want to run, organized in a way that reflects their
+        relationships and dependencies.
+
+        For example, a simple DAG could consist of three tasks: A,
+        B, and C. It could say that A has to run successfully before B can run,
+        but C can run anytime. It could say that task A times out after 5
+        minutes, and B can be restarted up to 5 times in case it fails. It might
+        also say that the workflow will run every night at 10pm, but shouldn’t
+        start until a certain date.
+
+        DAGs are represented as executable Python code, with specific tasks in a
+        pipeline job being represented by objects within that code.
+
+    Flask
+        A microframework for Python based on Wekzeug, Jinja 2, and "good
+        intentions." Flask functions as a Python wrapper for our website's html
+        code, extending functionality thanks to the tools provided by Python.
+
+    REST
+        REST, also known as RESTful, is an acronym for REpresentational State
+        Transfer. It is an architectural style for distributed hypermedia
+        systems, or just web applicationsk, and was first presented by Roy
+        Fielding in 2000.
+
+        REST is guided by 6 principles for
+        constraining its architectural style: the client-server relationship,
+        the stateless nature of its operation, a REST request's ability to be
+        cached, providing a uniform interface, having a layered system, and,
+        optionally, its functionality being extendable by downloading and
+        executing code in the form of applets or scripts.

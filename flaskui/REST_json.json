@@ -1,0 +1,15 @@
+{
+    "mission": "galileo_ssi_edr",
+    "tasks": [
+        ["gllssi2isis", [["from", "value"], ["to", "value"]]],
+        ["spiceinit", [["from", "value"], ["cksmithed", "yes"]]],
+        ["gllssical", [["from", "value"], ["to", "value"]]],
+        ["cam2map", [["from", "value"], ["to", "value"]]],
+        ["isis2std", [["from", "value"], ["to", "value"], ["mode", "grayscale"], ["format", "png"]]]
+    ],
+    "output": "/home/images",
+    "images": [],
+    "sources": ["http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.img",
+                "http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e15/europa/c044094/7446r.img"],
+    "filename": "2019_04_16_02_00_50"
+}

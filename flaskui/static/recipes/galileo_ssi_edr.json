@@ -1,0 +1,145 @@
+{
+  "inst": "galileo_ssi_edr",
+  "src": "/pds_san/PDS_Archive/Galileo/SSI/",
+  "upc": {
+    "recipe": {
+      "gllssi2isis": {
+        "from_": "value",
+        "to": "value"
+      },
+      "spiceinit": {
+        "from_": "value",
+        "cknadir": "yes",
+        "cksmithed": "yes"
+      },
+      "footprintinit": {
+        "from_": "value",
+        "increaseprecision": "yes",
+        "inctype": "vertices",
+        "numvertices": "40",
+        "maxemission": "89.5",
+        "maxincidence": "120.0"
+      },
+      "caminfo": {
+        "from_": "value",
+        "to": "value",
+        "geometry": "yes",
+        "isislabel": "yes",
+        "originallabel": "yes",
+        "statistics": "yes",
+        "camstats": "yes",
+        "linc": "100",
+        "sinc": "100",
+        "polygon": "yes",
+        "inctype": "vertices",
+        "numvertices": "40",
+        "maxemission": "89.5",
+        "maxincidence": "120.0",
+        "spice": "no"
+      }
+    }
+  },
+  "pow": {
+    "recipe": {
+      "gllssi2isis": {
+        "from": { "default": "value", "check": "none" },
+        "to": { "default": "value", "check": "none" }
+      },
+      "spiceinit": {
+        "from": { "default": "value", "check": "none" },
+        "cknadir": { "default": "yes", "check": "list", "check_list": ["YES", "NO", "DEFAULT"] },
+        "cksmithed": { "default": "yes", "check": "list", "check_list": ["YES", "NO", "DEFAULT"] }
+      },
+      "gllssical": {
+        "from": { "default": "value", "check": "none" },
+        "to": { "default": "value", "check": "none" }
+      },
+      "cam2map": {
+        "from": { "default": "value", "check": "none" },
+        "to": { "default": "value", "check": "none" },
+        "map": { "default": "value", "check": "file", "check_value": "DEFAULT" },
+        "matchmap": { "default": "no", "check": "list", "check_list": ["YES", "NO", "DEFAULT"] },
+        "pixres": { "default": "value", "check": "list", "check_list": ["CAMERA", "MAP", "MPP", "PPD", "DEFAULT"] },
+        "defaultrange": { "default": "value", "check": "list", "check_list": ["MINIMIZE", "CAMERA", "MAP", "DEFAULT"] }
+      },
+      "isis2std": {
+        "from": { "default": "value", "check": "none" },
+        "to": { "default": "value", "check": "none" },
+        "format": { "default": "jpeg", "check": "list", "check_list": ["PNG", "BMP", "TIFF", "JPEG", "JP2", "DEFAULT"] },
+        "quality": { "default": "60", "check": "range", "check_range": [-1, 100]},
+        "stretch": {"default": "linear", "check": "list", "check_list": ["LINEAR", "PIECEWISE", "MANUAL", "DEFAULT"]},
+        "mode": {"default": "GRAYSCALE", "check": "list", "check_list": ["GRAYSCALE", "RGB", "ARGB", "DEFAULT"]}
+        }
+      }
+    },
+    "reduced": {
+      "recipe": {
+        "gllssi2isis": {
+          "from_": "value",
+          "to": "value"
+        },
+        "spiceinit": {
+          "from_": "value",
+          "cknadir": "yes",
+          "cksmithed": "yes"
+        },
+        "gllssical": {
+          "from_": "value",
+          "to": "value"
+        },
+        "reduce": {
+          "from_": "value",
+          "to": "value",
+          "algorithm": "average",
+          "mode": "scale",
+          "sscale": "value",
+          "lscale": "value",
+          "validper": "1",
+          "vper_replace": "nearest"
+        },
+        "isis2std": {
+          "from_": "value",
+          "to": "value",
+          "format": "jpeg",
+          "quality": "60",
+          "stretch": "linear"
+        }
+      },
+      "browse": {
+        "minlines": "200",
+        "minsamples": "200",
+        "maxlines": "900",
+        "maxsamples": "900"
+      },
+      "thumbnail": {
+        "minlines": "50",
+        "minsamples": "50",
+        "maxlines": "300",
+        "maxsamples": "300"
+      }
+    },
+    "projected": {
+      "recipe": {
+        "gllssi2isis": {
+          "from_": "value",
+          "to": "value"
+        },
+        "spiceinit": {
+          "from_": "value",
+          "cknadir": "yes",
+          "cksmithed": "yes"
+        },
+        "gllssical": {
+          "from_": "value",
+          "to": "value"
+        },
+        "isis2std": {
+          "from_": "value",
+          "to": "value",
+          "format": "jpeg",
+          "quality": "60",
+          "stretch": "linear"
+        }
+      }
+    }
+  }

@@ -1,0 +1,14 @@
+name: PDS-Pipelines
+dependencies:
+    - python=3.6
+    - airflow
+    - isis3
+    - lxml
+    - pytz
+    - redis
+    - sqlalchemy
+    - geoalchemy2
+    - pip
+    - pip:
+        - pvl
+        - pysis
