@@ -77,7 +77,26 @@ POST request to the REST API.</p>
 <dl class="function">
 <dt id="ui.download">
 <code class="descclassname">ui.</code><code class="descname">download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ui.download" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A function called to provide the user with a zipped archive of their
+processed images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A .zip archive containing processed images.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ui.dag_test">
+<code class="descclassname">ui.</code><code class="descname">dag_test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ui.dag_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to test the ability of the UI to send a request to the REST
+API, using a pregenerated request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A simple message to indicate a successful test.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="rest-api">
@@ -89,11 +108,28 @@ command.</p>
 <dt id="rest_api.PipelineJob">
 <em class="property">class </em><code class="descclassname">rest_api.</code><code class="descname">PipelineJob</code><a class="headerlink" href="#rest_api.PipelineJob" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class that represents a POST endpoint for pipeline job submission.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A REST response depending on the result of the generation process.</p>
+<dl class="method">
+<dt id="rest_api.PipelineJob.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="headerlink" href="#rest_api.PipelineJob.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to handle requests made to the REST API. This function
+also contains a routine for testing the communication of the API to the
+generator library.</p>
+<dl class="simple">
+<dt>TODO:</dt><dd><ul class="simple">
+<li><p>Rework identifier for generation failure due to parameter error.</p></li>
+</ul>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>job_id</strong> – A job identifier in the form of the timestamp of when the job request was first made.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A REST response depending on the result of the generation process.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>

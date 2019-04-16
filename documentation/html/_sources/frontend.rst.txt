@@ -16,6 +16,7 @@ retrieved from the local ui.html file.
 .. autofunction:: ui.mission_page
 .. autofunction:: ui.submit
 .. autofunction:: ui.download
+.. autofunction:: ui.dag_test
 
 
 .. _rest-reference:

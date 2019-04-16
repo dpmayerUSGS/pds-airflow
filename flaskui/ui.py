@@ -129,6 +129,11 @@ def test():
 # TODO: Make curling nicer
 @ui_app.route( "/dagtest" )
 def dag_test():
+    """A function to test the ability of the UI to send a request to the REST
+    API, using a pregenerated request.
+
+    :returns: A simple message to indicate a successful test.
+    """
 
     with open( "REST_json.json", "r" ) as recipe_file:
         recipe_json = json.load( recipe_file )
@@ -139,6 +144,11 @@ def dag_test():
 
 @ui_app.route( "/download", methods=["POST"] )
 def download():
+    """A function called to provide the user with a zipped archive of their
+    processed images.
+
+    :returns: A .zip archive containing processed images.
+    """
     data = request.get_json()
     filename = data['file'][0]
     exists = os.path.isfile('./dags/' + filename + '.zip')
