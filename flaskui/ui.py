@@ -141,10 +141,10 @@ def download():
     exists = os.path.isfile('./dags/' + filename + '.zip')
     if exists:
         print(exists)
-         return send_file('./dags/' + filename + '.zip',
-             mimetype='application/zip',
-             attachment_filename='test.zip',
-             as_attachment=True)
+        return send_file('./dags/' + filename + '.zip',
+            mimetype='application/zip',
+            attachment_filename='test.zip',
+            as_attachment=True)
 
 # ------------------------------------------------------------------------------
 # Main -------------------------------------------------------------------------
