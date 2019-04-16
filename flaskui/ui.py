@@ -100,10 +100,13 @@ def submit():
     recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list, "filename": filename }
     recipe_string = json.dumps( recipe )
     recipe_json = json.loads( recipe_string )
-    requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
+    response = requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
+    print( response.text )
+    response_json = json.loads( response.text )
+    if( response_json["Response"] == "parameter error" ):
+        return render_template( "error.html", text=filename )
 
-    page_string = ""
-    return render_template("thank_you.html", text=filename)
+    return render_template("thank_you.html", text=filename )
 
 @ui_app.route( "/handle_data", methods=["POST"] )
 def handle_data():
@@ -141,10 +144,10 @@ def download():
     exists = os.path.isfile('./dags/' + filename + '.zip')
     if exists:
         print(exists)
-         return send_file('./dags/' + filename + '.zip',
-             mimetype='application/zip',
-             attachment_filename='test.zip',
-             as_attachment=True)
+        return send_file('./dags/' + filename + '.zip',
+            mimetype='application/zip',
+            attachment_filename='test.zip',
+            as_attachment=True)
 
 # ------------------------------------------------------------------------------
 # Main -------------------------------------------------------------------------
