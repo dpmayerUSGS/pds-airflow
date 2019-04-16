@@ -119,7 +119,7 @@ class DAGObject:
 
 
 # Generates the string for a DAG file from given list of DAG objects
-def generate_dag( dag_objects ):
+def generate_dag( dag_objects, timestamp ):
     """A function that converts reformatted user request data into a string
        representation of an executable :term:`DAG`.
 
@@ -397,5 +397,5 @@ if( __name__ == "__main__" and TEST ):
     if commands == "parameter error":
         print( "parameter error" )
     else:
-        dag = generate_dag( commands )
+        dag = generate_dag( commands, timestamp )
         print( dag )
