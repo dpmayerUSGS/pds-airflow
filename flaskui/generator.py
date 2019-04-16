@@ -156,7 +156,7 @@ mkdir = BashOperator(
 
 zip = BashOperator(
     task_id="zip",
-    bash_command= "zip /root/airflow/dags/''' + timestamp +'''.zip /out/''' + timestamp + '''",
+    bash_command= "cd /out && zip -r -m /root/airflow/dags/''' + timestamp +'''.zip ''' + timestamp + '''/ && cd -",
     retries=3,
     dag=dag
 )

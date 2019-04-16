@@ -1,4 +1,5 @@
 
+<!DOCTYPE html>
   <html lang="en">
   <head>
       <title>Pypline</title>
@@ -140,32 +141,26 @@
    }
 
   </style>
-	<script type="text/javascript">
-		$(function() {
-  $("#submission").delay(60000).fadeIn(500);
+<script type="text/javascript">
+$(function() {
+    $("#submission").delay(60000).fadeIn(500);
 });
 
-function fileExists(url) {
-    if(url){
-        var req = new XMLHttpRequest();
-        req.open('HEAD', url, false);
-        req.send();
-        return req.status==200;
-    } else {
-        return false;
-    }
+ var filename = '{{text|safe}}';
+
+function downloadCheck(filename) {
+    var postData = {file: filename}
+    $.ajax({
+        url: "/download",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(postData)
+    });
 }
 
-function downloadCheck(url) {
-  if(fileExists(url)){
-	  document.getElementById("submission").innerHTML = str.link(url);
-	  clearInterval(timer);
-  }
-}
+var timer = setInterval(downloadCheck([filename]), 15000);
 
-var timer = setInterval(downloadCheck(url), 15000);
-
-	</script>
+</script>
 </head>
 <body>
   <div class="container-contact100">
@@ -180,7 +175,7 @@ var timer = setInterval(downloadCheck(url), 15000);
 	</div>
 
 	<div class="submission_div" id="submission">
-		A link to files will appear here shortly
+		Your files will start downloading once finished processing. Please do not close the window.
 	</div>
 
 	<div>

@@ -8,7 +8,7 @@ import json
 import requests
 from datetime import datetime
 
-from flask import Flask, request, jsonify, redirect, url_for, render_template
+from flask import Flask, request, jsonify, redirect, url_for, render_template, send_file, send_from_directory, render_template
 from rest_api import REST_API_PORT
 
 
@@ -96,17 +96,14 @@ def submit():
         elif( name in included_program_list ):
             program_list[-1][1].append( [attribute, form[key]] )
 
-    recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list, "filename": datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" ) }
+    filename = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
+    recipe = {"mission":mission, "tasks":program_list, "output": output, "images": image_list, "sources": source_list, "filename": filename }
     recipe_string = json.dumps( recipe )
     recipe_json = json.loads( recipe_string )
     requests.post( "http://localhost:" + str(REST_API_PORT) + "/submit", headers={"content-type": "application/json"}, json=recipe_json )
 
     page_string = ""
-
-    with open( "thank_you.html", "r" ) as html:
-        return html.read()
-
-    return page_string
+    return render_template("thank_you.html", text=filename)
 
 @ui_app.route( "/handle_data", methods=["POST"] )
 def handle_data():
@@ -137,7 +134,17 @@ def dag_test():
 
     return "dag test"
 
-
+@ui_app.route( "/download", methods=["POST"] )
+def download():
+    data = request.get_json()
+    filename = data['file'][0]
+    exists = os.path.isfile('./dags/' + filename + '.zip')
+    if exists:
+        print(exists)
+         return send_file('./dags/' + filename + '.zip',
+             mimetype='application/zip',
+             attachment_filename='test.zip',
+             as_attachment=True)
 
 # ------------------------------------------------------------------------------
 # Main -------------------------------------------------------------------------
