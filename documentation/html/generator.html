@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Generator &#8212; Pypline 1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Front End" href="frontend.html" />
+    <link rel="prev" title="Pypline" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="frontend.html" title="Front End"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Pypline"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pypline 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="generator">
+<h1>Generator<a class="headerlink" href="#generator" title="Permalink to this headline">¶</a></h1>
+<p>This module handles converting a user’s pipeline request into an executable job
+and sends this job to a specified directory for execution. The module is broken
+up into three sections: <a class="reference internal" href="#object-reference"><span class="std std-ref">Objects</span></a>, <a class="reference internal" href="#generation-reference"><span class="std std-ref">Generation Functions</span></a>,
+and <a class="reference internal" href="#testing-reference"><span class="std std-ref">Testing Functions</span></a>.</p>
+<div class="section" id="objects">
+<span id="object-reference"></span><h2>Objects<a class="headerlink" href="#objects" title="Permalink to this headline">¶</a></h2>
+<p>These classes are used to organize user request data to better assist in
+generating a new pipeline job.</p>
+<dl class="class">
+<dt id="generator.CommandObject">
+<em class="property">class </em><code class="descclassname">generator.</code><code class="descname">CommandObject</code><span class="sig-paren">(</span><em>name</em>, <em>command</em>, <em>parameters</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.CommandObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object that holds an ISIS command for easy representation in a <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="generator.WGETCommandObject">
+<em class="property">class </em><code class="descclassname">generator.</code><code class="descname">WGETCommandObject</code><span class="sig-paren">(</span><em>name</em>, <em>parameter</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.WGETCommandObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object that holds a wget command, used for pulling mission imagery
+from the USGS archive.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="generator.DAGObject">
+<em class="property">class </em><code class="descclassname">generator.</code><code class="descname">DAGObject</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.DAGObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object that contains a command object with additional behavior for
+representing the command in a <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a>.</p>
+<dl class="method">
+<dt id="generator.DAGObject.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#generator.DAGObject.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function that retrieves a command’s name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="generation-functions">
+<span id="generation-reference"></span><h2>Generation Functions<a class="headerlink" href="#generation-functions" title="Permalink to this headline">¶</a></h2>
+<p>These functions encapsulate the entire generation process. Modifying these
+functions can result in the pipeline failing to operate.</p>
+<dl class="function">
+<dt id="generator.generate">
+<code class="descclassname">generator.</code><code class="descname">generate</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that drives the generation process.</p>
+<dl class="simple">
+<dt>TODO:</dt><dd><ul class="simple">
+<li><p>Improve identification of job.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – Original user request data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Success or failure status of generation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="generator.get_commands_from_json">
+<code class="descclassname">generator.</code><code class="descname">get_commands_from_json</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.get_commands_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>A function that reformats user request data to make it easier to convert</dt><dd><p>this data to a final, executable <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a>. Before making changes to this
+function, make sure to test your changes using
+<code class="xref py py-func docutils literal notranslate"><span class="pre">get_commands_frome_filename()</span></code>.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> – A JSON object representation of a user’s job request.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A reformatted user request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="generator.generate_dag">
+<code class="descclassname">generator.</code><code class="descname">generate_dag</code><span class="sig-paren">(</span><em>dag_objects</em>, <em>timestamp</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.generate_dag" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>A function that converts reformatted user request data into a string</dt><dd><p>representation of an executable <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a>.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dag_objects</strong> – Reformatted user request data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A string containing the <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a> corresponding to the user request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="testing-functions">
+<span id="testing-reference"></span><h2>Testing Functions<a class="headerlink" href="#testing-functions" title="Permalink to this headline">¶</a></h2>
+<p>These functions are used exclusively for testing and can be modified without
+affecting the standard operation of the pipeline.</p>
+<dl class="function">
+<dt id="generator.get_commands_from_filename">
+<code class="descclassname">generator.</code><code class="descname">get_commands_from_filename</code><span class="sig-paren">(</span><em>recipe_filename</em><span class="sig-paren">)</span><a class="headerlink" href="#generator.get_commands_from_filename" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>A function for testing <a class="reference internal" href="glossary.html#term-dag"><span class="xref std std-term">DAG</span></a> generation based on a fixed user request found</dt><dd><p>in a local JSON file. Used for testing potential changes to
+<a class="reference internal" href="#generator.get_commands_from_json" title="generator.get_commands_from_json"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_commands_from_json()</span></code></a> as well as ensuring
+<a class="reference internal" href="#generator.generate_dag" title="generator.generate_dag"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_dag()</span></code></a> is operating correctly.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>recipe_filename</strong> – The name of a JSON file containing a user request.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A reformatted user request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="generator.test">
+<code class="descclassname">generator.</code><code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#generator.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function for testing the ability of the REST API to respond to requests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Successful test response.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Generator</a><ul>
+<li><a class="reference internal" href="#objects">Objects</a></li>
+<li><a class="reference internal" href="#generation-functions">Generation Functions</a></li>
+<li><a class="reference internal" href="#testing-functions">Testing Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Pypline</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="frontend.html"
+                        title="next chapter">Front End</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/generator.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="frontend.html" title="Front End"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Pypline"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pypline 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Connor Schwirian, Nick Anderson, Austin Collins, Abdulaziz Zarie.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.0.
+    </div>
+  </body>
+</html>
