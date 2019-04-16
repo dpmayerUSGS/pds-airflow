@@ -227,16 +227,16 @@ def get_commands_from_filename( recipe_filename ):
                 elif check_type == 'list':
                     check_value = check_task[param_name]['check_list']
                     if param_value.upper() not in check_value:
-                        return "parameter error"
+                        return "parameter error", ""
                 elif check_type == 'file':
                     check_value = check_task[param_name]['check_value']
                     if type(param_value) != str:
-                        return "parameter error"
+                        return "parameter error", ""
                 elif check_type == 'range':
                     check_value = check_task[param_name]['check_range']
                     if param_value != "default":
                         if param_value < check_value[0] or param_value > check_value[1]:
-                            return "paramter error"
+                            return "parameter error", ""
 
                 if( parameters[index][0] == "from" ):
                     if( "2isis" in task[0] ):
@@ -314,16 +314,16 @@ def get_commands_from_json( request ):
                 elif check_type == 'list':
                     check_value = check_task[param_name]['check_list']
                     if param_value.upper() not in check_value:
-                        return "parameter error"
+                        return "parameter error", ""
                 elif check_type == 'file':
                     check_value = check_task[param_name]['check_value']
                     if type(param_value) != str:
-                        return "parameter error"
+                        return "parameter error", ""
                 elif check_type == 'range':
                     check_value = check_task[param_name]['check_range']
                     if param_value != "default":
                         if param_value < check_value[0] or param_value > check_value[1]:
-                            return "paramter error"
+                            return "parameter error", ""
 
                 if( "from" in parameters[index][0] ):
                     # Deals with the fact that some recipes have from_
@@ -367,11 +367,14 @@ def generate( data ):
     :returns: Success or failure status of generation.
     """
     dag_objects, timestamp = get_commands_from_json( data )
+    if( dag_objects == "parameter error" ):
+        return False
     dag_string = generate_dag( dag_objects, timestamp )
     with open( DAG_DIRECTORY + timestamp + ".py", "w" ) as job_file:
        job_file.write( dag_string % timestamp )
     if( TEST ):
         print( dag_string % timestamp )
+    return True
 
 
 # Tests generator library import

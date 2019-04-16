@@ -181,7 +181,10 @@
                             {
                                 html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
                             }
-                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                            else
+                            {
+                                html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                            }
                         }
                     }
                     html_string += '<input type="text" name="output" value="default">'
