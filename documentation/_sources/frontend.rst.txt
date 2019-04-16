@@ -1,0 +1,30 @@
+Front End
+=========
+
+The user facing section of this project is made up of two parts: a
+:ref:`ui-reference` and a :ref:`rest-reference`.
+
+.. _ui-reference:
+
+User Interface
+--------------
+
+The User Interface is the primary user facing aspect of this project. Providing
+users a simple method of submitting pipeline job requests. The page markdown is
+retrieved from the local ui.html file.
+
+.. autofunction:: ui.mission_page
+.. autofunction:: ui.submit
+
+
+.. _rest-reference:
+
+REST API
+--------
+
+The REST API is a simple endpoint that can be interacted with either indirectly
+through the User Interface or through a direct request, such as with a curl
+command.
+
+.. autoclass:: rest_api.PipelineJob
+    :members:

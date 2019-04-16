@@ -1,4 +1,4 @@
  #!/bin/sh
 cd /root/pds-airflow-techdemo/
-python ui.py &
-python rest_api.py &
+python3 ui.py &
+python3 rest_api.py &

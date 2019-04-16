@@ -35,7 +35,110 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 
 <style>
-    input[type=text] { width: 100px; }
+
+
+    input[type=text] {
+    	width: 120px;
+    	height: 24px;
+/*		  background-color: #333333;
+		  border-radius: 25px;*/
+
+		  font-family: Montserrat-Medium;
+		  font-size: 16px;
+/*		  color: #fff;
+*/		  line-height: 1.2;
+		  text-align: center;
+
+		  -webkit-transition: all 0.4s;
+		  -o-transition: all 0.4s;
+		  -moz-transition: all 0.4s;
+		  transition: all 0.4s;
+      background-color: #333333;
+      color: #fff;
+
+
+    }
+    input[type=submit] {
+    	  display: -webkit-box;
+		  display: -webkit-flex;
+		  display: -moz-box;
+		  display: -ms-flexbox;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  padding: 0 20px;
+
+		  height: 50px;
+		  background-color: #333333;
+		  border-radius: 25px;
+
+		  font-family: Montserrat-Medium;
+		  font-size: 16px;
+		  color: #fff;
+		  line-height: 1.2;
+
+		  -webkit-transition: all 0.4s;
+		  -o-transition: all 0.4s;
+		  -moz-transition: all 0.4s;
+		  transition: all 0.4s;
+    }
+
+    input[type=]
+    #sources {
+    	width: 200px;
+    }
+    #missions {
+    	width: 300px;
+    }
+
+    #job {
+    	padding: 20px;
+    	background-color: #fff;
+		 border-radius: 25px;
+     display: none;
+
+    }
+
+    #job:after {
+    	/*padding: 20px;*/
+    	padding-top: 100px;
+    	padding-bottom: 100px;
+    	padding-left: 200px;
+    }
+
+    #instructions {
+    	display: none;
+    }
+
+    .helpImg {
+    	width: 64%;
+    	height: 64%;
+    }
+
+    .helpImg1 {
+    	width: 80%;
+    	height: 70%;
+    }
+
+    .helpImg5 {
+    	height: 30%;
+    }
+
+    .contact100-form-title{
+     color: white;
+    }
+
+    #sources{
+      display: none;
+    }
+
+    .container-contact100 {
+  background-image: url("https://www.rocketlawyer.com/blog/wp-content/uploads/2012/08/ThinkstockPhotos-89614571-c2.jpg");
+   background-repeat: no-repeat;
+   background-size: 100%;
+   background-color: black;
+ }
+
 </style>
 <script type=text/javascript>
 
@@ -68,15 +171,19 @@
             {
                 $.getJSON( "static/recipes/mro_ctx.json", function( json )
                 {
-                    for( var command in json["pow"]["recipe"] )
-                    {
-                        html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
-                        // console.log( json["pow"]["recipe"][key] );
-                        for( var param in json["pow"]["recipe"][command] )
-                        {
-                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
-                        }
-                    }
+                  for( var command in json["pow"]["recipe"] )
+                  {
+                      html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                      // console.log( json["pow"]["recipe"][key] );
+                      for( var param in json["pow"]["recipe"][command] )
+                      {
+                          if(param == "from_" || param == "from" || param == "to")
+                          {
+                            html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
+                          }
+                          html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                      }
+                  }
                     html_string += '<input type="text" name="output" value="default">'
                     html_string += '<br><br><input type="submit">'
                     var imageThumbs = '';
@@ -88,8 +195,8 @@
                     }
                     $("#job").html(' \
                         mission: \
-                        <input type="text" name="mission" value="mro_ctx" readonly> \
-                        <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
+                        <input type="text" id=missions name="mission" value="mro_ctx" readonly> \
+                        <input type="text" id=sources name="sources" value="'+ imageurls.toString() +'" readonly> \
                         <br>'
                         + imageThumbs + html_string
                     );
@@ -99,28 +206,37 @@
             {
                 $.getJSON( "static/recipes/galileo_ssi_edr.json", function( json )
                 {
-                        for( var command in json["pow"]["recipe"] )
-                        {
-                        html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
-                        // console.log( json["pow"]["recipe"][key] );
-                        for( var param in json["pow"]["recipe"][command] )
-                        {
-                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
-                        }
-                    }
+                  for( var command in json["pow"]["recipe"] )
+                  {
+                  html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                  // console.log( json["pow"]["recipe"][key] );
+                  for( var param in json["pow"]["recipe"][command] )
+                  {
+                      if(param == "from_" || param == "from" || param == "to")
+                      {
+                        html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
+                      }
+                      else
+                      {
+                      html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                      }
+                  }
+              }
                     html_string += '<input type="text" name="output" value="default">'
-                    html_string += '<br><br><input type="submit">'
-                    var imageThumbs = '';
+                    html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
+
+                    var imageThumbs = ''
                     for (i = 0; i < imagedata.data.length-1; i++)
                     {
                       var url = imagedata.data[i][" edr_source"]
                       var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
                       imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
                     }
+                    imageThumbs += ''
                     $("#job").html(' \
                         mission: \
-                        <input type="text" name="mission" value="galileo_ssi_edr" readonly> \
-                        <input type="text" name="sources" value="'+ imageurls.toString() +'" readonly> \
+                        <input type="text" id=missions  name="mission" value="galileo_ssi_edr" readonly> \
+                        <input type="text" id=sources  name="sources" value="'+ imageurls.toString() +'" readonly> \
                         <br>'
                         + imageThumbs + html_string
                     );
@@ -190,6 +306,42 @@
         $("#csv-file").change(handleFileSelect);
     });
 
+  //   function toggle_visibility() {
+  // var x = document.getElementById("csv-form");
+  // if (x.style.display === "none") {
+  //   x.style.display = "block";
+  // } else {
+  //   x.style.display = "none";
+  // }}
+
+  function toggle_visibility() {
+    document.getElementById("csv-form").style.display = "none";
+    document.getElementById("job").style.display = "block";
+   // var x = document.getElementById("csv-form");
+   // if (x.style.display === "none") {
+   //   x.style.display = "block";
+   // } else {
+   //   x.style.display = "none";
+   // }
+   // var x = document.getElementById("job");
+   // if (x.style.display === "none") {
+   //   x.style.display = "block";
+   // } else {
+   //   x.style.display = "none";
+   // }
+  }
+
+  function toggle_help() {
+  	var y = document.getElementById("instructions");
+  	if (y.style.display === "none") {
+    y.style.display = "block";
+  } else {
+    y.style.display = "none";
+  }
+
+  }
+
+
 </script>
 <script>
 </script>
@@ -208,11 +360,91 @@
                 </span>
 
 
-
-                <div class="wrap-input100 input100-select bg1">
+                <div class="wrap-input100 input100-select bg1" id="help">
                     <span class="label-input100"></span>
                     <div>
-                        <input type="file" id="csv-file" name="files"/>
+
+                        <div class="container-contact100-form-btn">
+
+                            <button class="contact100-form-btn" type="button" value="go to help page" onclick="toggle_help()">
+                                <span>
+                                    Instructions
+                                </span>
+                            </button>
+
+                            <div id="instructions">
+                            	<br>
+                            	<h4>Instructions:</h4>
+                            	<ol>
+
+                            		<li>
+                            			1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>
+                            			<br>
+                            			<img class="helpImg" src="/static/images/help1.png">
+                            			<br>
+                            		</li>
+                            		<br>
+                            		<li>
+                            			2. Pick the planet or moon you like:
+                            			<br>
+                            			<img class="helpImg" src="/static/images/help2.png">
+                            			<br>
+
+                            			<br>
+                            			Note: Currently supported missions are
+										Galileo and MRO
+                            		</li>
+                            		<br>
+                            		<li>
+                            			3. Look through the images that you like and checkmark them
+                            			<br>
+                            			<img class="helpImg" src="/static/images/help3.png">
+                            			<br>
+                            		</li>
+                            		<br>
+                            		<li>
+                            			4. After that once you are done picking out your images in the top right of the images section click on the download button
+                            			<br>
+                            			<img class="helpImg1" src="/static/images/help4.png">
+                            			<br>
+                            		</li>
+                            		<br>
+                            		<li>5. and then download the CSV file
+                            			<br>
+                            			<img class="helpImg5" src="/static/images/help5.png">
+                            			<br>
+                            			<br>
+                            			Note: besure to download it in an easy to access folder.
+                            			<br>
+                            		</li>
+                            		<br>
+                            		<li>
+                            			6. once you know where you downloaded the csv file upload it to our UI.
+									The ui will automatically populate itself with the pictures and mission specific processing commands
+										<br>
+                            			<img class="helpImg1" src="/static/images/help6.png">
+                            			<br>
+                            		</li>
+                            		<br>
+                            		<li>
+                            			7. Uncheck the commands you don't like to use and submit
+                            			<br>
+                            			<img class="helpImg" src="/static/images/help7.png">
+                            			<br>
+                            		</li>
+                            	</ol>
+
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+
+                <div class="wrap-input100 input100-select bg1" id="csv-form">
+                    <span class="label-input100"></span>
+                    <div>
+                        <input type="file" id="csv-file" name="files" />
                         <!-- <select class="js-select2" name="mission">
                             <option value="Apollo">Apollo</option>
                             <option value="mro">MRO</option>
@@ -223,7 +455,7 @@
 
                         <div class="container-contact100-form-btn">
 
-                            <button class="contact100-form-btn" type="submit">
+                            <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
                                 <span>
                                     Submit CSV
                                     <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>

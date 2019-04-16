@@ -43,8 +43,8 @@ class CommandObject:
         for parameter in self.parameters:
             if(parameter[1] != "default"):
                 output += " " + parameter[0] + "="
-                if(parameter[0] == "from" or parameter[0] == "to"):
-                    output += "/"
+                # if(parameter[0] == "from" or parameter[0] == "to"):
+                #     output += "/"
                 output += parameter[1]
 
         return output
@@ -95,7 +95,7 @@ class DAGObject:
 # TODO: Move start object to object generation
 # TODO: Format dag, e.g. put spaces between parentheses
 # TODO: Place name of dag in dag
-def generate_dag( dag_objects ):
+def generate_dag( dag_objects, timestamp ):
 
     dag_string = '''from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
@@ -115,15 +115,32 @@ default_args = {
 dag = DAG( "%s", default_args=default_args, schedule_interval="@once" )
 
 prefix = 'source activate PDS-Pipelines && python /opt/conda/envs/PDS-Pipelines/scripts/isis3VarInit.py && source activate PDS-Pipelines && '
+
+mkdir = BashOperator(
+    task_id="mkdir",
+    bash_command= "mkdir /out/''' + timestamp + '''",
+    retries=3,
+    dag=dag
+)
+
+zip = BashOperator(
+    task_id="zip",
+    bash_command= "zip /root/airflow/dags/''' + timestamp +'''.zip /out/''' + timestamp + '''",
+    retries=3,
+    dag=dag
+)
 '''
 
     for dag_object in dag_objects:
         dag_string += "\n\n" + str( dag_object )
 
-    dag_string += "\n" + dag_objects[0].get_name()
+    dag_string += "\n\nmkdir"
+    dag_string += "\n" + dag_objects[0].get_name() + ".set_upstream(mkdir)"
 
     for index in range( 1, len( dag_objects ) ):
         dag_string += "\n" + dag_objects[index].get_name() + ".set_upstream(" + dag_objects[index - 1].get_name() + ")"
+
+    dag_string += "\nzip.set_upstream(" + dag_objects[len( dag_objects ) - 1].get_name() + ")"
 
     return dag_string
 
@@ -162,13 +179,13 @@ def get_commands_from_filename( recipe_filename ):
                             else:
                                 parameters[index][1] = "img/" + image
                         else:
-                            parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
+                            parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
                     elif( parameters[index][0] == "to" ):
                         file_index += 1
                         if( task[0] == "isis2std" ):
-                            parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
+                            parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + "." + parameters[-1][1]
                         else:
-                            parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
+                            parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
 
                 commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
@@ -205,11 +222,11 @@ def get_commands_from_file( recipe_file ):
             for index in range( len( parameters ) ):
                 if( parameters[index][0] == "from" ):
                     if( "2isis" in task[0] ):
-                        parameters[index][1] = "img/" + image
+                        parameters[index][1] = "/img/" + image
                     else:
-                        parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + ".cub"
                 elif( parameters[index][0] == "to" ):
-                    parameters[index][1] = "out/" + image.split(".")[0] + ".cub"
+                    parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + ".cub"
 
             commands.append( CommandObject( task[0], task[1] ) )
 
@@ -219,13 +236,15 @@ def get_commands_from_file( recipe_file ):
 
 
 # Gets a list of DAG objects from a json file containing UI output, using json object
-def get_commands_from_json( recipe ):
+def get_commands_from_json( recipe, timestamp ):
 
     mission = recipe["mission"]
     output = recipe["output"]
     tasks = recipe["tasks"]
     images = recipe["images"]
     sources = recipe["sources"]
+
+    ouput = "out/" + timestamp + "/"
 
     commands = []
     dag_objects = []
@@ -253,17 +272,17 @@ def get_commands_from_json( recipe ):
                     if( "2isis" in task[0] ):
                         # Handles the need of .lbl files for gllssi.
                         if(task[0] == "gllssi2isis"):
-                            parameters[index][1] = "img/" + image.split(".")[0] + ".lbl"
+                            parameters[index][1] = "/img/" + image.split(".")[0] + ".lbl"
                         else:
-                            parameters[index][1] = "img/" + image
+                            parameters[index][1] = "/img/" + image
                     else:
-                        parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
                 elif( parameters[index][0] == "to" ):
                     file_index += 1
                     if( task[0] == "isis2std" ):
-                        parameters[index][1] = "out/" + image.split(".")[0] + "." + parameters[-1][1]
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + "." + parameters[-1][1]
                     else:
-                        parameters[index][1] = "out/" + image.split(".")[0] + str(file_index) + ".cub"
+                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
 
             commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
 
@@ -279,9 +298,9 @@ def get_commands_from_json( recipe ):
 # Parameter is JSON recipe
 def generate( data ):
 
-    dag_objects = get_commands_from_json( data )
-    dag_string = generate_dag( dag_objects )
     timestamp = datetime.now().strftime( "%Y_%m_%d_%H_%M_%S" )
+    dag_objects = get_commands_from_json( data, timestamp )
+    dag_string = generate_dag( dag_objects, timestamp )
     with open( DAG_DIRECTORY + timestamp + ".py", "w" ) as job_file:
        job_file.write( dag_string % timestamp )
     if( TEST ):

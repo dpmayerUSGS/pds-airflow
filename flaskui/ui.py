@@ -8,7 +8,7 @@ import json
 import requests
 
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, url_for, render_template
 from rest_api import REST_API_PORT
 
 
@@ -92,11 +92,10 @@ def submit():
 
     page_string = ""
 
-    for image in image_list:
-        page_string += '<img src="/static/%s"> ' % image
+    with open( "thank_you.html", "r" ) as html:
+        return html.read()
 
     return page_string
-
 
 @ui_app.route( "/handle_data", methods=["POST"] )
 def handle_data():
