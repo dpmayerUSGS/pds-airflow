@@ -168,4 +168,4 @@ def download():
 
 
 if( __name__ == "__main__" ):
-    ui_app.run( port=UI_PORT, debug=True )
+    ui_app.run( port=UI_PORT, debug=False )

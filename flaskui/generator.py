@@ -372,12 +372,16 @@ def generate( data ):
     :param data: Original user request data.
     :returns: Success or failure status of generation.
     """
+    print( "Test 0" )
     dag_objects, timestamp = get_commands_from_json( data )
     if( dag_objects == "parameter error" ):
         return False
+    print( "Test 1" )
     dag_string = generate_dag( dag_objects, timestamp )
+    print( "Test 2" )
     with open( DAG_DIRECTORY + timestamp + ".py", "w" ) as job_file:
        job_file.write( dag_string % timestamp )
+    print( "Test 3" )
     if( TEST ):
         print( dag_string % timestamp )
     return True

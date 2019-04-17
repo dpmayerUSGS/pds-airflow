@@ -59,6 +59,7 @@ class PipelineJob( Resource ):
 
         if( job_id == "submit" ):
             try:
+                # print( json.loads( request.data ) )
                 if( not generator.generate( json.loads( request.data ) ) ):
                     return { "Response": "parameter error" }
             except:

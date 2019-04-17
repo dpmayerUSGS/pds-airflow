@@ -146,7 +146,7 @@ $(function() {
     $("#submission").delay(60000).fadeIn(500);
 });
 
- var filename = '{{text|safe}}';
+ var filename = ["{{text|safe}}"];
 
 function downloadCheck(filename) {
     var postData = {file: filename}
@@ -158,7 +158,7 @@ function downloadCheck(filename) {
     });
 }
 
-var timer = setInterval(downloadCheck([filename]), 15000);
+var timer = setInterval(downloadCheck(filename), 15000);
 
 </script>
 </head>
