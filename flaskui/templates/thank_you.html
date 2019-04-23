@@ -154,7 +154,17 @@ function downloadCheck(filename) {
         url: "/download",
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify(postData)
+        data: JSON.stringify(postData),
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data) {
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(data);
+            a.href = url;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
     });
 }
 
