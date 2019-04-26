@@ -148,27 +148,31 @@ $(function() {
 
  var filename = ["{{text|safe}}"];
 
-function downloadCheck(filename) {
-    var postData = {file: filename}
-    $.ajax({
-        url: "/download",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(postData),
-        xhrFields: {
-            responseType: 'blob'
-        },
-        success: function (data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            a.href = url;
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-    });
-}
+ function downloadCheck(filename)
+ {
+     var xmlHttp = new XMLHttpRequest();
+     xmlHttp.open( "GET", /download/+filename, false ); // false for synchronous request
+     xmlHttp.send( null );
+     if (xmlHttp.status == 200) { return true; }
+     return false;
 
-var timer = setInterval(downloadCheck(filename), 15000);
+ }
+
+ function download(filename)
+ {
+     if(downloadCheck(filename))
+     {
+         window.open(/download/+filename);
+     }
+     else
+     {
+         setTimeout(download, 15000, filename);
+     }
+ }
+
+window.onload = download(filename);
+
+
 
 </script>
 </head>
