@@ -21,7 +21,6 @@
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
 
     <!-- Javascript Imports -->
-    <script src="static/js/papaparse.min.js"></script>
     <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
     <script src="static/vendor/daterangepicker/moment.min.js"></script>
     <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
@@ -31,6 +30,7 @@
     <script src="static/vendor/bootstrap/js/popper.js"></script>
     <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="static/vendor/select2/select2.min.js"></script>
+    <script src="static/js/papaparse.min.js"></script>
     <script src="static/js/main.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 
@@ -127,7 +127,7 @@
         }
 
         .container-contact100 {
-            background-image: url("https://www.rocketlawyer.com/blog/wp-content/uploads/2012/08/ThinkstockPhotos-89614571-c2.jpg");
+            background-image: url( "https://www.rocketlawyer.com/blog/wp-content/uploads/2012/08/ThinkstockPhotos-89614571-c2.jpg" );
             background-repeat: no-repeat;
             background-size: 100%;
             background-color: black;
@@ -137,11 +137,11 @@
     <script type=text/javascript>
         function getMissionID()
         {
-            if (imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM")
+            if( imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM" )
             {
                 value = "gssi";
             }
-            else if (imagedata.data[0][" instrument"] == " CTX")
+            else if( imagedata.data[0][" instrument"] == " CTX" )
             {
                 value = "mro";
             }
@@ -154,9 +154,9 @@
             {
                 e.preventDefault();
                 imageurls =[];
-                for (index = 0; index < imagedata.data.length - 1; index++)
+                for ( index = 0; index < imagedata.data.length - 1; index++ )
                 {
-                    imageurls.push(imagedata.data[index][" edr_source"]);
+                    imageurls.push( imagedata.data[index][" edr_source"] );
                 }
 
                 var mission = getMissionID();
@@ -171,7 +171,7 @@
                             html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
                             for( var param in json["pow"]["recipe"][command] )
                             {
-                                if(param == "from_" || param == "from" || param == "to")
+                                if( param == "from_" || param == "from" || param == "to" )
                                 {
                                     html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
                                 }
@@ -184,13 +184,13 @@
                         html_string += '<input type="text" name="output" value="default">'
                         html_string += '<br><br><input type="submit">'
                         var imageThumbs = '';
-                        for (index = 0; index < imagedata.data.length - 1; index++)
+                        for( index = 0; index < imagedata.data.length - 1; index++ )
                         {
                             var url = imagedata.data[index][" edr_source"]
-                            var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
+                            var thumb = url.substring( url.lastIndexOf( "CTX" ) + 3, url.lastIndexOf( "." ) );
                             imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
                         }
-                        $("#job").html(' \
+                        $("#job").html( ' \
                             mission: \
                             <input type="text" id=missions name="mission" value="mro_ctx" readonly> \
                             <input type="text" id=sources name="sources" value="'+ imageurls.toString() +'" readonly> \
@@ -199,7 +199,7 @@
                         );
                     });
                 }
-                else if ( mission == "gssi" )
+                else if( mission == "gssi" )
                 {
                     $.getJSON( "static/recipes/galileo_ssi_edr.json", function( json )
                     {
@@ -222,14 +222,14 @@
                         html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
 
                         var imageThumbs = ''
-                        for (index = 0; index < imagedata.data.length - 1; index++)
+                        for ( index = 0; index < imagedata.data.length - 1; index++ )
                         {
                             var url = imagedata.data[index][" edr_source"]
-                            var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
+                            var thumb = url.substring( url.lastIndexOf( "SSI" ) + 3, url.lastIndexOf( "." ) );
                             imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
                         }
                         imageThumbs += ''
-                        $("#job").html(' \
+                        $("#job").html( ' \
                             mission: \
                             <input type="text" id=missions  name="mission" value="galileo_ssi_edr" readonly> \
                             <input type="text" id=sources  name="sources" value="'+ imageurls.toString() +'" readonly> \
@@ -336,57 +336,57 @@
 
                                 <ol>
                                     <li>
-                                        1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>
+                                        1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>.
                                         <br>
                                         <img class="helpImg" src="/static/images/help1.png">
                                         <br>
                                     </li>
                                     <br>
                                     <li>
-                                        2. Pick the planet or moon you like:
+                                        2. Pick the planet or moon you like.
                                         <br>
                                         <img class="helpImg" src="/static/images/help2.png">
                                         <br>
 
                                         <br>
                                         Note: Currently supported missions are
-                                        Galileo and MRO
+                                        Galileo SSI and MRO CTX.
                                     </li>
                                     <br>
                                     <li>
-                                        3. Look through the images that you like and checkmark them
+                                        3. Look through the images that you like and checkmark them.
                                         <br>
                                         <img class="helpImg" src="/static/images/help3.png">
                                         <br>
                                     </li>
                                     <br>
                                     <li>
-                                        4. After that once you are done picking out your images in the top right of the images section click on the download button
+                                        4. After that once you are done picking out your images in the top right of the images section click on the download button.
                                         <br>
                                         <img class="helpImg1" src="/static/images/help4.png">
                                         <br>
                                     </li>
                                     <br>
-                                    <li>5. and then download the CSV file
+                                    <li>5. Then download the CSV file.
                                         <br>
                                         <img class="helpImg5" src="/static/images/help5.png">
                                         <br>
 
                                         <br>
-                                        Note: besure to download it in an easy to access folder.
+                                        Note: be sure to download it in an easy to access folder.
                                         <br>
                                     </li>
                                     <br>
                                     <li>
-                                        6. once you know where you downloaded the csv file upload it to our UI.
-                                        The ui will automatically populate itself with the pictures and mission specific processing commands
+                                        6. Once you know where you downloaded the csv file upload it to our UI.
+                                        The UI will automatically populate itself with the pictures and mission specific processing commands.
                                         <br>
                                         <img class="helpImg1" src="/static/images/help6.png">
                                         <br>
                                     </li>
                                     <br>
                                     <li>
-                                        7. Uncheck the commands you don't like to use and submit
+                                        7. Uncheck the commands you don't like to use, alter command parameters at your discretion, and submit.
                                         <br>
                                         <img class="helpImg" src="/static/images/help7.png">
                                         <br>
@@ -413,7 +413,7 @@
                                 </span>
                             </button>
                         </div>
-                        
+
                     </div>
                 </div>
             </form>
