@@ -5,81 +5,43 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
+
+    <!-- CSS Imports -->
     <link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/fonts/iconic/css/material-design-iconic-font.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/noui/nouislider.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/css/util.css">
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
-    <!--===============================================================================================-->
+
+    <!-- Javascript Imports -->
     <script src="static/js/papaparse.min.js"></script>
     <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
     <script src="static/vendor/daterangepicker/moment.min.js"></script>
     <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
-    <!--===============================================================================================-->
     <script src="static/vendor/countdowntime/countdowntime.js"></script>
-    <!--===============================================================================================-->
     <script src="static/vendor/noui/nouislider.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
     <script src="static/vendor/animsition/js/animsition.min.js"></script>
-    <!--===============================================================================================-->
     <script src="static/vendor/bootstrap/js/popper.js"></script>
     <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
     <script src="static/vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
     <script src="static/js/main.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/animsition/js/animsition.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/bootstrap/js/popper.js"></script>
-    <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/daterangepicker/moment.min.js"></script>
-    <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/countdowntime/countdowntime.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/noui/nouislider.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/js/main.js"></script>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 
     <style>
         input[type=text] {
             width: 120px;
             height: 24px;
-            /*		  background-color: #333333;
-            border-radius: 25px;*/
 
             font-family: Montserrat-Medium;
             font-size: 16px;
-            /*		  color: #fff;
-            */		  line-height: 1.2;
+            line-height: 1.2;
             text-align: center;
 
             -webkit-transition: all 0.4s;
@@ -133,7 +95,6 @@
         }
 
         #job:after {
-            /*padding: 20px;*/
             padding-top: 100px;
             padding-bottom: 100px;
             padding-left: 200px;
@@ -174,7 +135,6 @@
     </style>
 
     <script type=text/javascript>
-
         function getMissionID()
         {
             if (imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM")
@@ -302,8 +262,8 @@
                 });
             });
         });
-
     </script>
+
 </head>
 
 <body>
@@ -446,7 +406,6 @@
                         <input type="file" id="csv-file" name="files" />
 
                         <div class="container-contact100-form-btn">
-
                             <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
                                 <span>
                                     Submit CSV
@@ -454,6 +413,7 @@
                                 </span>
                             </button>
                         </div>
+                        
                     </div>
                 </div>
             </form>
