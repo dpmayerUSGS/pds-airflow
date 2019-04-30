@@ -154,25 +154,62 @@
 
     $(function() {
         $("#mission").submit( function( e )
-        {
-            e.preventDefault();
-            imageurls =[];
-            for (index = 0; index < imagedata.data.length - 1; index++)
             {
-                imageurls.push(imagedata.data[index][" edr_source"]);
+                e.preventDefault();
+                imageurls =[];
+                for (index = 0; index < imagedata.data.length - 1; index++)
+                {
+                    imageurls.push(imagedata.data[index][" edr_source"]);
+                }
+
+                var mission = getMissionID();
+                var html_string = "";
+
+                if( mission == "mro" )
+                {
+                    $.getJSON( "static/recipes/mro_ctx.json", function( json )
+                    {
+                        for( var command in json["pow"]["recipe"] )
+                        {
+                            html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                            // console.log( json["pow"]["recipe"][key] );
+                            for( var param in json["pow"]["recipe"][command] )
+                            {
+                                if(param == "from_" || param == "from" || param == "to")
+                                {
+                                    html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
+                                }
+                                else
+                                {
+                                    html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                                }
+                            }
+                        }
+                        html_string += '<input type="text" name="output" value="default">'
+                        html_string += '<br><br><input type="submit">'
+                        var imageThumbs = '';
+                        for (index = 0; index < imagedata.data.length - 1; index++)
+                        {
+                            var url = imagedata.data[index][" edr_source"]
+                            var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
+                            imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
+                        }
+                        $("#job").html(' \
+                        mission: \
+                        <input type="text" id=missions name="mission" value="mro_ctx" readonly> \
+                        <input type="text" id=sources name="sources" value="'+ imageurls.toString() +'" readonly> \
+                        <br>'
+                        + imageThumbs + html_string
+                    );
+                });
             }
-
-            var mission = getMissionID();
-            var html_string = "";
-
-            if( mission == "mro" )
+            else if ( mission == "gssi" )
             {
-                $.getJSON( "static/recipes/mro_ctx.json", function( json )
+                $.getJSON( "static/recipes/galileo_ssi_edr.json", function( json )
                 {
                     for( var command in json["pow"]["recipe"] )
                     {
                         html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
-                        // console.log( json["pow"]["recipe"][key] );
                         for( var param in json["pow"]["recipe"][command] )
                         {
                             if(param == "from_" || param == "from" || param == "to")
@@ -186,162 +223,96 @@
                         }
                     }
                     html_string += '<input type="text" name="output" value="default">'
-                    html_string += '<br><br><input type="submit">'
-                    var imageThumbs = '';
-                    for (index = 0; index < imagedata.data.length - 1; index++)
+                    html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
+
+                    var imageThumbs = ''
+                    for (i = 0; i < imagedata.data.length-1; i++)
                     {
-                        var url = imagedata.data[index][" edr_source"]
-                        var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
-                        imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
+                        var url = imagedata.data[i][" edr_source"]
+                        var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
+                        imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
                     }
+                    imageThumbs += ''
                     $("#job").html(' \
-                    mission: \
-                    <input type="text" id=missions name="mission" value="mro_ctx" readonly> \
-                    <input type="text" id=sources name="sources" value="'+ imageurls.toString() +'" readonly> \
-                    <br>'
-                    + imageThumbs + html_string
-                );
-            });
-        }
-        else if ( mission == "gssi" )
-        {
-            $.getJSON( "static/recipes/galileo_ssi_edr.json", function( json )
+                        mission: \
+                        <input type="text" id=missions  name="mission" value="galileo_ssi_edr" readonly> \
+                        <input type="text" id=sources  name="sources" value="'+ imageurls.toString() +'" readonly> \
+                        <br>'
+                        + imageThumbs + html_string
+                    );
+                });
+            }
+            else
             {
-                for( var command in json["pow"]["recipe"] )
-                {
-                    html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
-                    // console.log( json["pow"]["recipe"][key] );
-                    for( var param in json["pow"]["recipe"][command] )
-                    {
-                        if(param == "from_" || param == "from" || param == "to")
-                        {
-                            html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
-                        }
-                        else
-                        {
-                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
-                        }
-                    }
-                }
-                html_string += '<input type="text" name="output" value="default">'
-                html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
+                $("#job").html("<p>This mission is not supported.<p>");
+            }
 
-                var imageThumbs = ''
-                for (i = 0; i < imagedata.data.length-1; i++)
-                {
-                    var url = imagedata.data[i][" edr_source"]
-                    var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
-                    imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
-                }
-                imageThumbs += ''
-                $("#job").html(' \
-                mission: \
-                <input type="text" id=missions  name="mission" value="galileo_ssi_edr" readonly> \
-                <input type="text" id=sources  name="sources" value="'+ imageurls.toString() +'" readonly> \
-                <br>'
-                + imageThumbs + html_string
-            );
-        });
-    }
-
-    else
-    {
-        $("#job").html("<p>This mission is not supported.<p>");
-    }
-
-});
-});
-
-$(function()
-{
-    var $submitters = $("#job").find( "input[type=submit]" );
-
-    $("#job").submit( function( e )
-    {
-        //e.preventDefault();
-        var form = $(this);
-        var url = "/submit";
-        var method = "POST";
-        $.ajax({
-            type: method,
-            url: url,
-            data: form.serialize()
         });
     });
-});
 
-</script>
+    $(function()
+    {
+        var $submitters = $("#job").find( "input[type=submit]" );
 
+        $("#job").submit( function( e )
+        {
+            //e.preventDefault();
+            var form = $(this);
+            var url = "/submit";
+            var method = "POST";
+            $.ajax({
+                type: method,
+                url: url,
+                data: form.serialize()
+            });
+        });
+    });
 
-
+    </script>
 </head>
 
-<!-- <body>
-<style type="text/css">
-.container-contact100 {
-background-image: url("https://photojournal.jpl.nasa.gov/jpeg/PIA22512.jpg");
-background-repeat: no-repeat;
-background-size: 100%;
-}
-</style> -->
 
 <script>
-var imagedata;
 
-function handleFileSelect(evt)
-{
-    var file = evt.target.files[0];
+    var imagedata;
 
-    Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        complete: function(results)
-        {
-            imagedata = results;
-        }
-    });
-}
+    function handleFileSelect(evt)
+    {
+        var file = evt.target.files[0];
 
-$(document).ready(function()
-{
-    $("#csv-file").change(handleFileSelect);
-});
-
-//   function toggle_visibility() {
-// var x = document.getElementById("csv-form");
-// if (x.style.display === "none") {
-//   x.style.display = "block";
-// } else {
-//   x.style.display = "none";
-// }}
-
-function toggle_visibility() {
-    document.getElementById("csv-form").style.display = "none";
-    document.getElementById("job").style.display = "block";
-    // var x = document.getElementById("csv-form");
-    // if (x.style.display === "none") {
-    //   x.style.display = "block";
-    // } else {
-    //   x.style.display = "none";
-    // }
-    // var x = document.getElementById("job");
-    // if (x.style.display === "none") {
-    //   x.style.display = "block";
-    // } else {
-    //   x.style.display = "none";
-    // }
-}
-
-function toggle_help() {
-    var y = document.getElementById("instructions");
-    if (y.style.display === "none") {
-        y.style.display = "block";
-    } else {
-        y.style.display = "none";
+        Papa.parse(file, {
+            header: true,
+            dynamicTyping: true,
+            complete: function(results)
+            {
+                imagedata = results;
+            }
+        });
     }
 
-}
+    $(document).ready(function()
+    {
+        $("#csv-file").change(handleFileSelect);
+    });
 
+    function toggle_visibility()
+    {
+        document.getElementById("csv-form").style.display = "none";
+        document.getElementById("job").style.display = "block";
+    }
+
+    function toggle_help()
+    {
+        var y = document.getElementById("instructions");
+        if (y.style.display === "none")
+        {
+            y.style.display = "block";
+        }
+        else
+        {
+            y.style.display = "none";
+        }
+    }
 
 </script>
 
@@ -353,17 +324,15 @@ Begin the UI Sample transition
 <div class="container-contact100">
     <div class="wrap-contact100">
         <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
+
             <span class="contact100-form-title">
                 Pypline
             </span>
 
-
             <div class="wrap-input100 input100-select bg1" id="help">
                 <span class="label-input100"></span>
                 <div>
-
                     <div class="container-contact100-form-btn">
-
                         <button class="contact100-form-btn" type="button" value="go to help page" onclick="toggle_help()">
                             <span>
                                 Instructions
@@ -373,8 +342,8 @@ Begin the UI Sample transition
                         <div id="instructions">
                             <br>
                             <h4>Instructions:</h4>
-                            <ol>
 
+                            <ol>
                                 <li>
                                     1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>
                                     <br>
@@ -411,6 +380,7 @@ Begin the UI Sample transition
                                     <br>
                                     <img class="helpImg5" src="/static/images/help5.png">
                                     <br>
+
                                     <br>
                                     Note: besure to download it in an easy to access folder.
                                     <br>
@@ -443,29 +413,22 @@ Begin the UI Sample transition
                 <span class="label-input100"></span>
                 <div>
                     <input type="file" id="csv-file" name="files" />
-                    <!-- <select class="js-select2" name="mission">
-                    <option value="Apollo">Apollo</option>
-                    <option value="mro">MRO</option>
-                    <option value="gssi">Galileo</option>
-                    <option value="notsupported">Cassini</option>
-                </select>
-                <div class="dropDownSelect2"></div> -->
 
-                <div class="container-contact100-form-btn">
+                    <div class="container-contact100-form-btn">
 
-                    <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
-                        <span>
-                            Submit CSV
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                        </span>
-                    </button>
+                        <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
+                            <span>
+                                Submit CSV
+                                <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <form id="job" action="/submit" method="post"></form>
+        </form>
 
-</div>
+        <form id="job" action="/submit" method="post"></form>
+    </div>
 </div>
 
 
@@ -480,12 +443,12 @@ Begin the UI Sample transition
 <!--===============================================================================================-->
 <script src="static/vendor/select2/select2.min.js"></script>
 <script>
-$(".js-select2").each(function()
-{
-    $(this).select2(
+    $(".js-select2").each(function()
+    {
+        $(this).select2(
         {
-            minimumResultsForSearch: 20,
-            dropdownParent: $(this).next('.dropDownSelect2')
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next('.dropDownSelect2')
         });
 
 
@@ -504,8 +467,8 @@ $(".js-select2").each(function()
                 }
             });
         });
-    })
-    </script>
+    });
+</script>
     <!--===============================================================================================-->
     <script src="static/vendor/daterangepicker/moment.min.js"></script>
     <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
