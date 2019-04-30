@@ -6,12 +6,12 @@
 import os
 import json
 import requests
+import io
 from datetime import datetime
 
-from flask import Flask, request, jsonify, redirect, url_for, render_template, send_file, send_from_directory, render_template
+from flask import Flask, request, jsonify, redirect, url_for, render_template, send_from_directory, send_file
 from rest_api import REST_API_PORT
-
-
+from flask import Response
 
 # ------------------------------------------------------------------------------
 # Constants --------------------------------------------------------------------
@@ -109,7 +109,7 @@ def submit():
     if( response_json["Response"] == "parameter error" ):
         return render_template( "error.html", text=filename )
 
-    return render_template("thank_you.html", text=filename )
+    return render_template("thank_you.html", text=(filename + '.zip') )
 
 @ui_app.route( "/handle_data", methods=["POST"] )
 def handle_data():
@@ -145,22 +145,13 @@ def dag_test():
 
     return "dag test"
 
-@ui_app.route( "/download", methods=["POST"] )
-def download():
-    """A function called to provide the user with a zipped archive of their
-    processed images.
-
-    :returns: A .zip archive containing processed images.
-    """
-    data = request.get_json()
-    filename = data['file'][0]
-    exists = os.path.isfile('./dags/' + filename + '.zip')
+@ui_app.route('/download/<path:filename>', methods=['GET','POST'])
+def download(filename):
+    exists = os.path.isfile('./dags/' + filename)
     if exists:
-        print(exists)
-        return send_file('./dags/' + filename + '.zip',
-            mimetype='application/zip',
-            attachment_filename='test.zip',
-            as_attachment=True)
+        path = os.path.realpath('./dags/')
+        return send_from_directory(path, filename, as_attachment=True, mimetype='application/zip')
+
 
 # ------------------------------------------------------------------------------
 # Main -------------------------------------------------------------------------
