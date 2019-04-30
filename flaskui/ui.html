@@ -5,642 +5,516 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
+
+    <!-- CSS Imports -->
     <link rel="icon" type="image/png" href="static/images/icons/favicon.ico"/>
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/fonts/iconic/css/material-design-iconic-font.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/animate/animate.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/vendor/noui/nouislider.min.css">
-    <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="static/css/util.css">
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
-    <!--===============================================================================================-->
 
-    <script src="static/js/papaparse.min.js"></script>
+    <!-- Javascript Imports -->
     <script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="static/vendor/daterangepicker/moment.min.js"></script>
+    <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="static/vendor/countdowntime/countdowntime.js"></script>
+    <script src="static/vendor/noui/nouislider.min.js"></script>
+    <script src="static/vendor/animsition/js/animsition.min.js"></script>
+    <script src="static/vendor/bootstrap/js/popper.js"></script>
+    <script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/vendor/select2/select2.min.js"></script>
+    <script src="static/js/papaparse.min.js"></script>
+    <script src="static/js/main.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 
     <style>
+        input[type=text] {
+            width: 120px;
+            height: 24px;
 
-    input[type=text] {
-        width: 120px;
-        height: 24px;
-        /*		  background-color: #333333;
-        border-radius: 25px;*/
+            font-family: Montserrat-Medium;
+            font-size: 16px;
+            line-height: 1.2;
+            text-align: center;
 
-        font-family: Montserrat-Medium;
-        font-size: 16px;
-        /*		  color: #fff;
-        */		  line-height: 1.2;
-        text-align: center;
-
-        -webkit-transition: all 0.4s;
-        -o-transition: all 0.4s;
-        -moz-transition: all 0.4s;
-        transition: all 0.4s;
-        background-color: #333333;
-        color: #fff;
+            -webkit-transition: all 0.4s;
+            -o-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            transition: all 0.4s;
+            background-color: #333333;
+            color: #fff;
 
 
-    }
-    input[type=submit] {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0 20px;
+        }
+        input[type=submit] {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
 
-        height: 50px;
-        background-color: #333333;
-        border-radius: 25px;
+            height: 50px;
+            background-color: #333333;
+            border-radius: 25px;
 
-        font-family: Montserrat-Medium;
-        font-size: 16px;
-        color: #fff;
-        line-height: 1.2;
+            font-family: Montserrat-Medium;
+            font-size: 16px;
+            color: #fff;
+            line-height: 1.2;
 
-        -webkit-transition: all 0.4s;
-        -o-transition: all 0.4s;
-        -moz-transition: all 0.4s;
-        transition: all 0.4s;
-    }
+            -webkit-transition: all 0.4s;
+            -o-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            transition: all 0.4s;
+        }
 
-    input[type=]
-    #sources {
-        width: 200px;
-    }
-    #missions {
-        width: 300px;
-    }
+        input[type=]
+        #sources {
+            width: 200px;
+        }
+        #missions {
+            width: 300px;
+        }
 
-    #job {
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 25px;
-        display: none;
+        #job {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 25px;
+            display: none;
 
-    }
+        }
 
-    #job:after {
-        /*padding: 20px;*/
-        padding-top: 100px;
-        padding-bottom: 100px;
-        padding-left: 200px;
-    }
+        #job:after {
+            padding-top: 100px;
+            padding-bottom: 100px;
+            padding-left: 200px;
+        }
 
-    #instructions {
-        display: none;
-    }
+        #instructions {
+            display: none;
+        }
 
-    .helpImg {
-        width: 64%;
-        height: 64%;
-    }
+        .helpImg {
+            width: 64%;
+            height: 64%;
+        }
 
-    .helpImg1 {
-        width: 80%;
-        height: 70%;
-    }
+        .helpImg1 {
+            width: 80%;
+            height: 70%;
+        }
 
-    .helpImg5 {
-        height: 30%;
-    }
+        .helpImg5 {
+            height: 30%;
+        }
 
-    .contact100-form-title{
-        color: white;
-    }
+        .contact100-form-title{
+            color: white;
+        }
 
-    #sources{
-        display: none;
-    }
+        #sources{
+            display: none;
+        }
 
-    .container-contact100 {
-        background-image: url("https://www.rocketlawyer.com/blog/wp-content/uploads/2012/08/ThinkstockPhotos-89614571-c2.jpg");
-        background-repeat: no-repeat;
-        background-size: 100%;
-        background-color: black;
-    }
-
+        .container-contact100 {
+            background-image: url( "https://www.rocketlawyer.com/blog/wp-content/uploads/2012/08/ThinkstockPhotos-89614571-c2.jpg" );
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-color: black;
+        }
     </style>
+
     <script type=text/javascript>
-
-    function getMissionID() {
-        if (imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM")
+        function getMissionID()
         {
-            value = "gssi";
-        }
-        else if (imagedata.data[0][" instrument"] == " CTX")
-        {
-            value = "mro";
-        }
-        return value;
-    }
-
-    $(function() {
-        $("#mission").submit( function( e )
-        {
-            e.preventDefault();
-            imageurls =[];
-            for (index = 0; index < imagedata.data.length - 1; index++)
+            if( imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM" )
             {
-                imageurls.push(imagedata.data[index][" edr_source"]);
+                value = "gssi";
             }
-
-            var mission = getMissionID();
-            var html_string = "";
-
-            if( mission == "mro" )
+            else if( imagedata.data[0][" instrument"] == " CTX" )
             {
-                $.getJSON( "static/recipes/mro_ctx.json", function( json )
-                {
-                    for( var command in json["pow"]["recipe"] )
-                    {
-                        html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
-                        // console.log( json["pow"]["recipe"][key] );
-                        for( var param in json["pow"]["recipe"][command] )
-                        {
-                            if(param == "from_" || param == "from" || param == "to")
-                            {
-                                html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
-                            }
-                            else
-                            {
-                                html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
-                            }
-                        }
-                    }
-                    html_string += '<input type="text" name="output" value="default">'
-                    html_string += '<br><br><input type="submit">'
-                    var imageThumbs = '';
-                    for (index = 0; index < imagedata.data.length - 1; index++)
-                    {
-                        var url = imagedata.data[index][" edr_source"]
-                        var thumb = url.substring(url.lastIndexOf("CTX") + 3, url.lastIndexOf("."));
-                        imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
-                    }
-                    $("#job").html(' \
-                    mission: \
-                    <input type="text" id=missions name="mission" value="mro_ctx" readonly> \
-                    <input type="text" id=sources name="sources" value="'+ imageurls.toString() +'" readonly> \
-                    <br>'
-                    + imageThumbs + html_string
-                );
-            });
+                value = "mro";
+            }
+            return value;
         }
-        else if ( mission == "gssi" )
+
+        $(function()
         {
-            $.getJSON( "static/recipes/galileo_ssi_edr.json", function( json )
+            $("#mission").submit( function( e )
             {
-                for( var command in json["pow"]["recipe"] )
+                e.preventDefault();
+                imageurls =[];
+                for ( index = 0; index < imagedata.data.length - 1; index++ )
                 {
-                    html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
-                    // console.log( json["pow"]["recipe"][key] );
-                    for( var param in json["pow"]["recipe"][command] )
+                    imageurls.push( imagedata.data[index][" edr_source"] );
+                }
+
+                var mission = getMissionID();
+                var html_string = "";
+
+                if( mission == "mro" )
+                {
+                    $.getJSON( "static/recipes/mro_ctx.json", function( json )
                     {
-                        if(param == "from_" || param == "from" || param == "to")
+                        for( var command in json["pow"]["recipe"] )
                         {
-                            html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
+                            html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                            for( var param in json["pow"]["recipe"][command] )
+                            {
+                                if( param == "from_" || param == "from" || param == "to" )
+                                {
+                                    html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
+                                }
+                                else
+                                {
+                                    html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                                }
+                            }
                         }
-                        else
+                        html_string += '<input type="text" name="output" value="default">'
+                        html_string += '<br><br><input type="submit">'
+                        var imageThumbs = '';
+                        for( index = 0; index < imagedata.data.length - 1; index++ )
                         {
-                            html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                            var url = imagedata.data[index][" edr_source"]
+                            var thumb = url.substring( url.lastIndexOf( "CTX" ) + 3, url.lastIndexOf( "." ) );
+                            imageThumbs += '<img src="https://upcimages.wr.usgs.gov/mars_reconnaissance_orbiter/ctx'+ thumb +'.thumbnail.jpg"> \ ';
                         }
-                    }
+                        $("#job").html( ' \
+                            mission: \
+                            <input type="text" id=missions name="mission" value="mro_ctx" readonly> \
+                            <input type="text" id=sources name="sources" value="'+ imageurls.toString() +'" readonly> \
+                            <br>'
+                            + imageThumbs + html_string
+                        );
+                    });
                 }
-                html_string += '<input type="text" name="output" value="default">'
-                html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
-
-                var imageThumbs = ''
-                for (i = 0; i < imagedata.data.length-1; i++)
+                else if( mission == "gssi" )
                 {
-                    var url = imagedata.data[i][" edr_source"]
-                    var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
-                    imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
-                }
-                imageThumbs += ''
-                $("#job").html(' \
-                mission: \
-                <input type="text" id=missions  name="mission" value="galileo_ssi_edr" readonly> \
-                <input type="text" id=sources  name="sources" value="'+ imageurls.toString() +'" readonly> \
-                <br>'
-                + imageThumbs + html_string
-            );
-        });
-    }
+                    $.getJSON( "static/recipes/galileo_ssi_edr.json", function( json )
+                    {
+                        for( var command in json["pow"]["recipe"] )
+                        {
+                            html_string += '<br><input type="checkbox" name="' + command + '!check" checked> ' + command + ' ';
+                            for( var param in json["pow"]["recipe"][command] )
+                            {
+                                if(param == "from_" || param == "from" || param == "to")
+                                {
+                                    html_string += ' <input type="text" name="' + command + '!' + param + '" value="default" style="display:none"> ';
+                                }
+                                else
+                                {
+                                    html_string += param + ' <input type="text" name="' + command + '!' + param + '" value="default"> ';
+                                }
+                            }
+                        }
+                        html_string += '<input type="text" name="output" value="default">'
+                        html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
 
-    else
-    {
-        $("#job").html("<p>This mission is not supported.<p>");
-    }
-
-});
-});
-
-$(function()
-{
-    var $submitters = $("#job").find( "input[type=submit]" );
-
-    $("#job").submit( function( e )
-    {
-        //e.preventDefault();
-        var form = $(this);
-        var url = "/submit";
-        var method = "POST";
-        $.ajax({
-            type: method,
-            url: url,
-            data: form.serialize()
-        });
-    });
-});
-
-</script>
-
-
-
-</head>
-
-<!-- <body>
-<style type="text/css">
-.container-contact100 {
-background-image: url("https://photojournal.jpl.nasa.gov/jpeg/PIA22512.jpg");
-background-repeat: no-repeat;
-background-size: 100%;
-}
-</style> -->
-
-<script>
-var imagedata;
-
-function handleFileSelect(evt)
-{
-    var file = evt.target.files[0];
-
-    Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        complete: function(results)
-        {
-            imagedata = results;
-        }
-    });
-}
-
-$(document).ready(function()
-{
-    $("#csv-file").change(handleFileSelect);
-});
-
-//   function toggle_visibility() {
-// var x = document.getElementById("csv-form");
-// if (x.style.display === "none") {
-//   x.style.display = "block";
-// } else {
-//   x.style.display = "none";
-// }}
-
-function toggle_visibility() {
-    document.getElementById("csv-form").style.display = "none";
-    document.getElementById("job").style.display = "block";
-    // var x = document.getElementById("csv-form");
-    // if (x.style.display === "none") {
-    //   x.style.display = "block";
-    // } else {
-    //   x.style.display = "none";
-    // }
-    // var x = document.getElementById("job");
-    // if (x.style.display === "none") {
-    //   x.style.display = "block";
-    // } else {
-    //   x.style.display = "none";
-    // }
-}
-
-function toggle_help() {
-    var y = document.getElementById("instructions");
-    if (y.style.display === "none") {
-        y.style.display = "block";
-    } else {
-        y.style.display = "none";
-    }
-
-}
-
-
-</script>
-
-<!--
-Begin the UI Sample transition
--->
-
-
-<div class="container-contact100">
-    <div class="wrap-contact100">
-        <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
-            <span class="contact100-form-title">
-                Pypline
-            </span>
-
-
-            <div class="wrap-input100 input100-select bg1" id="help">
-                <span class="label-input100"></span>
-                <div>
-
-                    <div class="container-contact100-form-btn">
-
-                        <button class="contact100-form-btn" type="button" value="go to help page" onclick="toggle_help()">
-                            <span>
-                                Instructions
-                            </span>
-                        </button>
-
-                        <div id="instructions">
-                            <br>
-                            <h4>Instructions:</h4>
-                            <ol>
-
-                                <li>
-                                    1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help1.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>
-                                    2. Pick the planet or moon you like:
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help2.png">
-                                    <br>
-
-                                    <br>
-                                    Note: Currently supported missions are
-                                    Galileo and MRO
-                                </li>
-                                <br>
-                                <li>
-                                    3. Look through the images that you like and checkmark them
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help3.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>
-                                    4. After that once you are done picking out your images in the top right of the images section click on the download button
-                                    <br>
-                                    <img class="helpImg1" src="/static/images/help4.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>5. and then download the CSV file
-                                    <br>
-                                    <img class="helpImg5" src="/static/images/help5.png">
-                                    <br>
-                                    <br>
-                                    Note: besure to download it in an easy to access folder.
-                                    <br>
-                                </li>
-                                <br>
-                                <li>
-                                    6. once you know where you downloaded the csv file upload it to our UI.
-                                    The ui will automatically populate itself with the pictures and mission specific processing commands
-                                    <br>
-                                    <img class="helpImg1" src="/static/images/help6.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>
-                                    7. Uncheck the commands you don't like to use and submit
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help7.png">
-                                    <br>
-                                </li>
-                            </ol>
-
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>
-
-
-            <div class="wrap-input100 input100-select bg1" id="csv-form">
-                <span class="label-input100"></span>
-                <div>
-                    <input type="file" id="csv-file" name="files" />
-                    <!-- <select class="js-select2" name="mission">
-                    <option value="Apollo">Apollo</option>
-                    <option value="mro">MRO</option>
-                    <option value="gssi">Galileo</option>
-                    <option value="notsupported">Cassini</option>
-                </select>
-                <div class="dropDownSelect2"></div> -->
-
-                <div class="container-contact100-form-btn">
-
-                    <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
-                        <span>
-                            Submit CSV
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </form>
-    <form id="job" action="/submit" method="post"></form>
-
-</div>
-</div>
-
-
-
-<!--===============================================================================================-->
-<script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/bootstrap/js/popper.js"></script>
-<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/select2/select2.min.js"></script>
-<script>
-$(".js-select2").each(function()
-{
-    $(this).select2(
-        {
-            minimumResultsForSearch: 20,
-            dropdownParent: $(this).next('.dropDownSelect2')
-        });
-
-
-        $(".js-select2").each(function()
-        {
-            $(this).on('select2:close', function (e)
-            {
-                if($(this).val() == "Please chooses")
-                {
-                    $('.js-show-service').slideUp();
+                        var imageThumbs = ''
+                        for ( index = 0; index < imagedata.data.length - 1; index++ )
+                        {
+                            var url = imagedata.data[index][" edr_source"]
+                            var thumb = url.substring( url.lastIndexOf( "SSI" ) + 3, url.lastIndexOf( "." ) );
+                            imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
+                        }
+                        imageThumbs += ''
+                        $("#job").html( ' \
+                            mission: \
+                            <input type="text" id=missions  name="mission" value="galileo_ssi_edr" readonly> \
+                            <input type="text" id=sources  name="sources" value="'+ imageurls.toString() +'" readonly> \
+                            <br>'
+                            + imageThumbs + html_string
+                        );
+                    });
                 }
                 else
                 {
-                    $('.js-show-service').slideUp();
-                    $('.js-show-service').slideDown();
+                    $("#job").html( "<p>This mission is not supported.<p>" );
                 }
             });
         });
-    })
-    </script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/daterangepicker/moment.min.js"></script>
-    <script src="static/vendor/daterangepicker/daterangepicker.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/countdowntime/countdowntime.js"></script>
-    <!--===============================================================================================-->
-    <script src="static/vendor/noui/nouislider.min.js"></script>
-    <script>
-    var filterBar = document.getElementById('filter-bar');
 
-    noUiSlider.create(filterBar, {
-        start: [ 1500, 3900 ],
-        connect: true,
-        range: {
-            'min': 1500,
-            'max': 7500
+        $(function()
+        {
+            var $submitters = $("#job").find( "input[type=submit]" );
+
+            $("#job").submit( function( e )
+            {
+                var form = $(this);
+                var url = "/submit";
+                var method = "POST";
+                $.ajax(
+                {
+                    type: method,
+                    url: url,
+                    data: form.serialize()
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <script>
+        var imagedata;
+
+        function handleFileSelect( evt )
+        {
+            var file = evt.target.files[0];
+
+            Papa.parse( file,
+            {
+                header: true,
+                dynamicTyping: true,
+                complete: function( results )
+                {
+                    imagedata = results;
+                }
+            });
         }
-    });
 
-    var skipValues = [
-        document.getElementById('value-lower'),
-        document.getElementById('value-upper')
-    ];
+        $(document).ready( function()
+        {
+            $("#csv-file").change( handleFileSelect );
+        });
 
-    filterBar.noUiSlider.on('update', function( values, handle ) {
-        skipValues[handle].innerHTML = Math.round(values[handle]);
-        $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
-        $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
-    });
-    </script>
-    <!--===============================================================================================-->
-    <script src="static/js/main.js"></script>
+        function toggle_visibility()
+        {
+            document.getElementById( "csv-form" ).style.display = "none";
+            document.getElementById( "job" ).style.display = "block";
+        }
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-23581568-13');
-    </script>
-
-    <!--
-    End UI Sample transition
-
-
-    <div class='container'>
-    <form id="mission">
-    <select name="mission">
-    <option value="mro">MRO</option>
-    <option value="gssi">GSSI</option>
-    <option value="Apollo">Apollo</option>
-    <option value="notsupported">Cassini</option>
-</select>
-<input type="submit" value="Select">
-</form>
-<form id="job" action="/submit" method="post">
-
-</form> -->
-
-</div>
-
-<!--===============================================================================================-->
-<script src="static/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/bootstrap/js/popper.js"></script>
-<script src="static/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-
-<script>
-$(".js-select2").each(function(){
-    $(this).select2({
-        minimumResultsForSearch: 20,
-        dropdownParent: $(this).next('.dropDownSelect2')
-    });
-
-
-    $(".js-select2").each(function(){
-        $(this).on('select2:close', function (e){
-            if($(this).val() == "Please chooses") {
-                $('.js-show-service').slideUp();
+        function toggle_help()
+        {
+            var y = document.getElementById( "instructions" );
+            if ( y.style.display === "none" )
+            {
+                y.style.display = "block";
             }
-            else {
-                $('.js-show-service').slideUp();
-                $('.js-show-service').slideDown();
+            else
+            {
+                y.style.display = "none";
+            }
+        }
+    </script>
+
+
+    <div class="container-contact100">
+        <div class="wrap-contact100">
+            <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
+
+                <span class="contact100-form-title">
+                    Pypline
+                </span>
+
+                <div class="wrap-input100 input100-select bg1" id="help">
+                    <span class="label-input100"></span>
+                    <div>
+                        <div class="container-contact100-form-btn">
+                            <button class="contact100-form-btn" type="button" value="go to help page" onclick="toggle_help()">
+                                <span>
+                                    Instructions
+                                </span>
+                            </button>
+
+                            <div id="instructions">
+                                <br>
+                                <h4>Instructions:</h4>
+
+                                <ol>
+                                    <li>
+                                        1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>.
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help1.png">
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>
+                                        2. Pick the planet or moon you like.
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help2.png">
+                                        <br>
+
+                                        <br>
+                                        Note: Currently supported missions are
+                                        Galileo SSI and MRO CTX.
+                                    </li>
+                                    <br>
+                                    <li>
+                                        3. Look through the images that you like and checkmark them.
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help3.png">
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>
+                                        4. After that once you are done picking out your images in the top right of the images section click on the download button.
+                                        <br>
+                                        <img class="helpImg1" src="/static/images/help4.png">
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>5. Then download the CSV file.
+                                        <br>
+                                        <img class="helpImg5" src="/static/images/help5.png">
+                                        <br>
+
+                                        <br>
+                                        Note: be sure to download it in an easy to access folder.
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>
+                                        6. Once you know where you downloaded the csv file upload it to our UI.
+                                        The UI will automatically populate itself with the pictures and mission specific processing commands.
+                                        <br>
+                                        <img class="helpImg1" src="/static/images/help6.png">
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>
+                                        7. Uncheck the commands you don't like to use, alter command parameters at your discretion, and submit.
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help7.png">
+                                        <br>
+                                    </li>
+                                </ol>
+
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+
+                <div class="wrap-input100 input100-select bg1" id="csv-form">
+                    <span class="label-input100"></span>
+                    <div>
+                        <input type="file" id="csv-file" name="files" />
+
+                        <div class="container-contact100-form-btn">
+                            <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
+                                <span>
+                                    Submit CSV
+                                    <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <form id="job" action="/submit" method="post"></form>
+        </div>
+    </div>
+
+    <script>
+        $(".js-select2").each( function()
+        {
+            $(this).select2(
+            {
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $(this).next( '.dropDownSelect2' )
+            });
+
+
+            $(".js-select2").each( function()
+            {
+                $(this).on('select2:close', function( e )
+                {
+                    if( $(this).val() == "Please chooses" )
+                    {
+                        $('.js-show-service').slideUp();
+                    }
+                    else
+                    {
+                        $('.js-show-service').slideUp();
+                        $('.js-show-service').slideDown();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        var filterBar = document.getElementById( 'filter-bar' );
+
+        noUiSlider.create(filterBar,
+        {
+            start: [ 1500, 3900 ],
+            connect: true,
+            range: {
+                'min': 1500,
+                'max': 7500
             }
         });
-    });
-})
-</script>
-<!--===============================================================================================-->
-<script src="static/vendor/daterangepicker/moment.min.js"></script>
-<script src="static/vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-<script src="static/vendor/noui/nouislider.min.js"></script>
-<script>
-var filterBar = document.getElementById('filter-bar');
 
-noUiSlider.create(filterBar, {
-    start: [ 1500, 3900 ],
-    connect: true,
-    range: {
-        'min': 1500,
-        'max': 7500
-    }
-});
+        var skipValues = [
+            document.getElementById('value-lower'),
+            document.getElementById('value-upper')
+        ];
 
-var skipValues = [
-    document.getElementById('value-lower'),
-    document.getElementById('value-upper')
-];
+        filterBar.noUiSlider.on( 'update', function( values, handle )
+        {
+            skipValues[handle].innerHTML = Math.round( values[handle] );
+            $('.contact100-form-range-value input[name="from-value"]').val( $('#value-lower').html() );
+            $('.contact100-form-range-value input[name="to-value"]').val( $('#value-upper').html() );
+        });
+    </script>
 
-filterBar.noUiSlider.on('update', function( values, handle ) {
-    skipValues[handle].innerHTML = Math.round(values[handle]);
-    $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
-    $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
-});
-</script>
-<!--===============================================================================================-->
-<script src="static/js/main.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag()
+        {
+            dataLayer.push(arguments);
+        }
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
+        gtag( 'js', new Date() );
+        gtag( 'config', 'UA-23581568-13' );
+    </script>
 
-gtag('config', 'UA-23581568-13');
-</script>
+    <script>
+        $(".js-select2").each( function()
+        {
+            $(this).select2(
+            {
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next( '.dropDownSelect2' )
+            });
+
+
+            $(".js-select2").each( function()
+            {
+                $(this).on( 'select2:close', function( e )
+                {
+                    if( $(this).val() == "Please choose" )
+                    {
+                        $('.js-show-service').slideUp();
+                    }
+                    else
+                    {
+                        $('.js-show-service').slideUp();
+                        $('.js-show-service').slideDown();
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
