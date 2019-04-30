@@ -34,6 +34,7 @@
     <script src="static/js/main.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 
+    <!-- Customized CSS Style -->
     <style>
         input[type=text] {
             width: 120px;
@@ -136,6 +137,7 @@
 
     <script type=text/javascript>
         function getMissionID()
+        // Retrieve the instrument ID from the CSV file and return the tag
         {
             if( imagedata.data[0][" instrument"] == " SOLID STATE IMAGING SYSTEM" )
             {
@@ -149,6 +151,8 @@
         }
 
         $(function()
+        // Using the mission tag, parse the associated recipe and dynamically add
+        // form to page for user parameter selection
         {
             $("#mission").submit( function( e )
             {
@@ -246,6 +250,7 @@
         });
 
         $(function()
+        // Sumbits form data to REST API on submit button selection
         {
             var $submitters = $("#job").find( "input[type=submit]" );
 
@@ -272,6 +277,7 @@
         var imagedata;
 
         function handleFileSelect( evt )
+        // Takes in a CSV file, parses the file, and returns a array of form data
         {
             var file = evt.target.files[0];
 
@@ -292,12 +298,14 @@
         });
 
         function toggle_visibility()
+        // Toggles the visbility of the CSV input box and show job customization form
         {
             document.getElementById( "csv-form" ).style.display = "none";
             document.getElementById( "job" ).style.display = "block";
         }
 
         function toggle_help()
+        // Toggles display of the instructions
         {
             var y = document.getElementById( "instructions" );
             if ( y.style.display === "none" )
