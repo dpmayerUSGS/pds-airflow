@@ -51,8 +51,6 @@ class CommandObject:
         for parameter in self.parameters:
             if(parameter[1] != "default"):
                 output += " " + parameter[0] + "="
-                # if(parameter[0] == "from" or parameter[0] == "to"):
-                #     output += "/"
                 output += parameter[1]
 
         return output
@@ -174,92 +172,6 @@ zip = BashOperator(
     dag_string += "\nzip.set_upstream(" + dag_objects[len( dag_objects ) - 1].get_name() + ")"
 
     return dag_string
-
-
-# FOR TESTING
-# Gets a list of DAG objects from a json file containing UI output, using filename
-def get_commands_from_filename( recipe_filename ):
-    """A function for testing :term:`DAG` generation based on a fixed user request found
-       in a local JSON file. Used for testing potential changes to
-       :func:`get_commands_from_json` as well as ensuring
-       :func:`generate_dag` is operating correctly.
-
-    :param recipe_filename: The name of a JSON file containing a user request.
-    :returns: A reformatted user request.
-    """
-
-    with open( recipe_filename, "r", ) as file:
-        request = json.load( file )
-
-    mission = request["mission"]
-    output = request["output"]
-    tasks = request["tasks"]
-    images = request["images"]
-    sources = request["sources"]
-    timestamp = request["filename"]
-
-    commands = []
-    dag_objects = []
-
-    with open( "static/recipes/" + mission + ".json", "r", ) as file:
-        recipe = json.load( file )
-    pow = recipe["pow"]["recipe"]
-
-    if( images == [] ):
-        for source in sources:
-            images.append( source.split("/")[-1] )
-            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0], source ) )
-            commands.append( WGETCommandObject( source.split("/")[-1].split(".")[0] + "lbl", source.replace( ".img", ".lbl" ) ) )
-
-    for image in images:
-        file_index = 0
-        for task in tasks:
-            parameters = task[1]
-            check_task = pow[task[0]]
-
-            for index in range( len( parameters ) ):
-                param_name = parameters[index][0]
-                param_value = parameters[index][1]
-
-                check_type = check_task[param_name]["check"]
-                if check_type == 'none':
-                    check_value = 'none'
-                elif check_type == 'list':
-                    check_value = check_task[param_name]['check_list']
-                    if param_value.upper() not in check_value:
-                        return "parameter error", ""
-                elif check_type == 'file':
-                    check_value = check_task[param_name]['check_value']
-                    if type(param_value) != str:
-                        return "parameter error", ""
-                elif check_type == 'range':
-                    check_value = check_task[param_name]['check_range']
-                    if param_value != "default":
-                        if param_value < check_value[0] or param_value > check_value[1]:
-                            return "parameter error", ""
-
-                if( parameters[index][0] == "from" ):
-                    if( "2isis" in task[0] ):
-                        if(task[0] == "gllssi2isis"):
-                            parameters[index][1] = "img/" + image.split(".")[0] + ".lbl"
-                        else:
-                            parameters[index][1] = "img/" + image
-                    else:
-                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
-                elif( parameters[index][0] == "to" ):
-                    file_index += 1
-                    if( task[0] == "isis2std" ):
-                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + "." + parameters[-1][1]
-                    else:
-                        parameters[index][1] = "/out/" + timestamp + "/" + image.split(".")[0] + str(file_index) + ".cub"
-
-            commands.append( CommandObject( task[0] + image.split(".")[0], task[0], copy.deepcopy( parameters ) ) )
-
-    for command in commands:
-        dag_objects.append( DAGObject( command ) )
-
-    return dag_objects, timestamp
-
 
 # Gets a list of DAG objects from a json file containing UI output, using json object
 def get_commands_from_json( request ):
