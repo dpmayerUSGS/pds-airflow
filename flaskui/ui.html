@@ -262,9 +262,9 @@
                         html_string += '<br><br><input type="submit" onclick=\'window.location=/thank_you.html\';" />'
 
                         var imageThumbs = ''
-                        for (i = 0; i < imagedata.data.length-1; i++)
+                        for (index = 0; index < imagedata.data.length - 1; index++)
                         {
-                            var url = imagedata.data[i][" edr_source"]
+                            var url = imagedata.data[index][" edr_source"]
                             var thumb = url.substring(url.lastIndexOf("SSI") + 3, url.lastIndexOf("."));
                             imageThumbs += '<img src="https://upcimages.wr.usgs.gov/galileo'+ thumb +'.thumbnail.jpg"> \ ';
                         }
@@ -280,7 +280,7 @@
                 }
                 else
                 {
-                    $("#job").html("<p>This mission is not supported.<p>");
+                    $("#job").html( "<p>This mission is not supported.<p>" );
                 }
             });
         });
@@ -291,11 +291,11 @@
 
             $("#job").submit( function( e )
             {
-                //e.preventDefault();
                 var form = $(this);
                 var url = "/submit";
                 var method = "POST";
-                $.ajax({
+                $.ajax(
+                {
                     type: method,
                     url: url,
                     data: form.serialize()
@@ -306,279 +306,254 @@
     </script>
 </head>
 
+<body>
 
-<script>
+    <script>
+        var imagedata;
 
-    var imagedata;
+        function handleFileSelect( evt )
+        {
+            var file = evt.target.files[0];
 
-    function handleFileSelect(evt)
-    {
-        var file = evt.target.files[0];
-
-        Papa.parse(file, {
-            header: true,
-            dynamicTyping: true,
-            complete: function(results)
+            Papa.parse( file,
             {
-                imagedata = results;
-            }
+                header: true,
+                dynamicTyping: true,
+                complete: function( results )
+                {
+                    imagedata = results;
+                }
+            });
+        }
+
+        $(document).ready( function()
+        {
+            $("#csv-file").change( handleFileSelect );
         });
-    }
 
-    $(document).ready(function()
-    {
-        $("#csv-file").change(handleFileSelect);
-    });
-
-    function toggle_visibility()
-    {
-        document.getElementById("csv-form").style.display = "none";
-        document.getElementById("job").style.display = "block";
-    }
-
-    function toggle_help()
-    {
-        var y = document.getElementById("instructions");
-        if (y.style.display === "none")
+        function toggle_visibility()
         {
-            y.style.display = "block";
+            document.getElementById( "csv-form" ).style.display = "none";
+            document.getElementById( "job" ).style.display = "block";
         }
-        else
+
+        function toggle_help()
         {
-            y.style.display = "none";
+            var y = document.getElementById( "instructions" );
+            if ( y.style.display === "none" )
+            {
+                y.style.display = "block";
+            }
+            else
+            {
+                y.style.display = "none";
+            }
         }
-    }
-
-</script>
-
-<!--
-Begin the UI Sample transition
--->
+    </script>
 
 
-<div class="container-contact100">
-    <div class="wrap-contact100">
-        <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
+    <div class="container-contact100">
+        <div class="wrap-contact100">
+            <form class="contact100-form validate-form" id="mission" onsubmit="getMissionID()">
 
-            <span class="contact100-form-title">
-                Pypline
-            </span>
+                <span class="contact100-form-title">
+                    Pypline
+                </span>
 
-            <div class="wrap-input100 input100-select bg1" id="help">
-                <span class="label-input100"></span>
-                <div>
-                    <div class="container-contact100-form-btn">
-                        <button class="contact100-form-btn" type="button" value="go to help page" onclick="toggle_help()">
-                            <span>
-                                Instructions
-                            </span>
-                        </button>
+                <div class="wrap-input100 input100-select bg1" id="help">
+                    <span class="label-input100"></span>
+                    <div>
+                        <div class="container-contact100-form-btn">
+                            <button class="contact100-form-btn" type="button" value="go to help page" onclick="toggle_help()">
+                                <span>
+                                    Instructions
+                                </span>
+                            </button>
 
-                        <div id="instructions">
-                            <br>
-                            <h4>Instructions:</h4>
-
-                            <ol>
-                                <li>
-                                    1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help1.png">
-                                    <br>
-                                </li>
+                            <div id="instructions">
                                 <br>
-                                <li>
-                                    2. Pick the planet or moon you like:
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help2.png">
-                                    <br>
+                                <h4>Instructions:</h4>
 
+                                <ol>
+                                    <li>
+                                        1. Go to: <a href="https://pilot.wr.usgs.gov/" target="_blank">https://pilot.wr.usgs.gov/</a>
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help1.png">
+                                        <br>
+                                    </li>
                                     <br>
-                                    Note: Currently supported missions are
-                                    Galileo and MRO
-                                </li>
-                                <br>
-                                <li>
-                                    3. Look through the images that you like and checkmark them
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help3.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>
-                                    4. After that once you are done picking out your images in the top right of the images section click on the download button
-                                    <br>
-                                    <img class="helpImg1" src="/static/images/help4.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>5. and then download the CSV file
-                                    <br>
-                                    <img class="helpImg5" src="/static/images/help5.png">
-                                    <br>
+                                    <li>
+                                        2. Pick the planet or moon you like:
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help2.png">
+                                        <br>
 
+                                        <br>
+                                        Note: Currently supported missions are
+                                        Galileo and MRO
+                                    </li>
                                     <br>
-                                    Note: besure to download it in an easy to access folder.
+                                    <li>
+                                        3. Look through the images that you like and checkmark them
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help3.png">
+                                        <br>
+                                    </li>
                                     <br>
-                                </li>
-                                <br>
-                                <li>
-                                    6. once you know where you downloaded the csv file upload it to our UI.
-                                    The ui will automatically populate itself with the pictures and mission specific processing commands
+                                    <li>
+                                        4. After that once you are done picking out your images in the top right of the images section click on the download button
+                                        <br>
+                                        <img class="helpImg1" src="/static/images/help4.png">
+                                        <br>
+                                    </li>
                                     <br>
-                                    <img class="helpImg1" src="/static/images/help6.png">
-                                    <br>
-                                </li>
-                                <br>
-                                <li>
-                                    7. Uncheck the commands you don't like to use and submit
-                                    <br>
-                                    <img class="helpImg" src="/static/images/help7.png">
-                                    <br>
-                                </li>
-                            </ol>
+                                    <li>5. and then download the CSV file
+                                        <br>
+                                        <img class="helpImg5" src="/static/images/help5.png">
+                                        <br>
 
+                                        <br>
+                                        Note: besure to download it in an easy to access folder.
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>
+                                        6. once you know where you downloaded the csv file upload it to our UI.
+                                        The ui will automatically populate itself with the pictures and mission specific processing commands
+                                        <br>
+                                        <img class="helpImg1" src="/static/images/help6.png">
+                                        <br>
+                                    </li>
+                                    <br>
+                                    <li>
+                                        7. Uncheck the commands you don't like to use and submit
+                                        <br>
+                                        <img class="helpImg" src="/static/images/help7.png">
+                                        <br>
+                                    </li>
+                                </ol>
+
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+
+                <div class="wrap-input100 input100-select bg1" id="csv-form">
+                    <span class="label-input100"></span>
+                    <div>
+                        <input type="file" id="csv-file" name="files" />
+
+                        <div class="container-contact100-form-btn">
+
+                            <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
+                                <span>
+                                    Submit CSV
+                                    <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+                                </span>
+                            </button>
                         </div>
                     </div>
-                    <br>
                 </div>
-            </div>
+            </form>
 
-
-            <div class="wrap-input100 input100-select bg1" id="csv-form">
-                <span class="label-input100"></span>
-                <div>
-                    <input type="file" id="csv-file" name="files" />
-
-                    <div class="container-contact100-form-btn">
-
-                        <button class="contact100-form-btn" type="submit" onclick="toggle_visibility()">
-                            <span>
-                                Submit CSV
-                                <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <form id="job" action="/submit" method="post"></form>
+            <form id="job" action="/submit" method="post"></form>
+        </div>
     </div>
-</div>
 
-<script>
-    $(".js-select2").each(function()
-    {
-        $(this).select2(
+    <script>
+        $(".js-select2").each( function()
         {
-                minimumResultsForSearch: 20,
-                dropdownParent: $(this).next('.dropDownSelect2')
-        });
-
-
-        $(".js-select2").each(function()
-        {
-            $(this).on('select2:close', function (e)
+            $(this).select2(
             {
-                if($(this).val() == "Please chooses")
+                    minimumResultsForSearch: 20,
+                    dropdownParent: $(this).next( '.dropDownSelect2' )
+            });
+
+
+            $(".js-select2").each( function()
+            {
+                $(this).on('select2:close', function( e )
                 {
-                    $('.js-show-service').slideUp();
-                }
-                else
-                {
-                    $('.js-show-service').slideUp();
-                    $('.js-show-service').slideDown();
-                }
+                    if( $(this).val() == "Please chooses" )
+                    {
+                        $('.js-show-service').slideUp();
+                    }
+                    else
+                    {
+                        $('.js-show-service').slideUp();
+                        $('.js-show-service').slideDown();
+                    }
+                });
             });
         });
-    });
-</script>
-<script>
-    var filterBar = document.getElementById('filter-bar');
+    </script>
 
-    noUiSlider.create(filterBar, {
-        start: [ 1500, 3900 ],
-        connect: true,
-        range: {
-            'min': 1500,
-            'max': 7500
-        }
-    });
+    <script>
+        var filterBar = document.getElementById( 'filter-bar' );
 
-    var skipValues = [
-        document.getElementById('value-lower'),
-        document.getElementById('value-upper')
-    ];
-
-    filterBar.noUiSlider.on('update', function( values, handle ) {
-        skipValues[handle].innerHTML = Math.round(values[handle]);
-        $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
-        $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
-    });
-</script>
-
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-23581568-13');
-</script>
-
-<script>
-    $(".js-select2").each(function(){
-        $(this).select2({
-            minimumResultsForSearch: 20,
-            dropdownParent: $(this).next('.dropDownSelect2')
+        noUiSlider.create(filterBar,
+        {
+            start: [ 1500, 3900 ],
+            connect: true,
+            range: {
+                'min': 1500,
+                'max': 7500
+            }
         });
 
+        var skipValues = [
+            document.getElementById('value-lower'),
+            document.getElementById('value-upper')
+        ];
 
-        $(".js-select2").each(function(){
-            $(this).on('select2:close', function (e){
-                if($(this).val() == "Please chooses") {
-                    $('.js-show-service').slideUp();
-                }
-                else {
-                    $('.js-show-service').slideUp();
-                    $('.js-show-service').slideDown();
-                }
+        filterBar.noUiSlider.on( 'update', function( values, handle )
+        {
+            skipValues[handle].innerHTML = Math.round( values[handle] );
+            $('.contact100-form-range-value input[name="from-value"]').val( $('#value-lower').html() );
+            $('.contact100-form-range-value input[name="to-value"]').val( $('#value-upper').html() );
+        });
+    </script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag()
+        {
+            dataLayer.push(arguments);
+        }
+
+        gtag( 'js', new Date() );
+        gtag( 'config', 'UA-23581568-13' );
+    </script>
+
+    <script>
+        $(".js-select2").each( function()
+        {
+            $(this).select2(
+            {
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next( '.dropDownSelect2' )
+            });
+
+
+            $(".js-select2").each( function()
+            {
+                $(this).on( 'select2:close', function( e )
+                {
+                    if( $(this).val() == "Please choose" )
+                    {
+                        $('.js-show-service').slideUp();
+                    }
+                    else
+                    {
+                        $('.js-show-service').slideUp();
+                        $('.js-show-service').slideDown();
+                    }
+                });
             });
         });
-    });
-</script>
-
-<script>
-    var filterBar = document.getElementById('filter-bar');
-
-    noUiSlider.create(filterBar, {
-        start: [ 1500, 3900 ],
-        connect: true,
-        range: {
-            'min': 1500,
-            'max': 7500
-        }
-    });
-
-    var skipValues = [
-        document.getElementById('value-lower'),
-        document.getElementById('value-upper')
-    ];
-
-    filterBar.noUiSlider.on('update', function( values, handle ) {
-        skipValues[handle].innerHTML = Math.round(values[handle]);
-        $('.contact100-form-range-value input[name="from-value"]').val($('#value-lower').html());
-        $('.contact100-form-range-value input[name="to-value"]').val($('#value-upper').html());
-    });
-</script>
-
-
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-23581568-13');
-</script>
+    </script>
 
 </body>
 
