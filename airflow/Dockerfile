@@ -9,11 +9,13 @@ ADD environment.yml /tmp/environment.yml
 
 RUN conda env create -f /tmp/environment.yml
 
-ENV PATH /opt/conda/envs/PDS-Pipelines/bin:$PATH 
+ENV PATH /opt/conda/envs/PDS-Pipelines/bin:$PATH
 ENV AIRFLOW_HOME ~/airflow
 ENV ISISROOT /opt/conda/envs/PDS-Pipelines/
 ENV ISISDATA /opt/conda/envs/PDS-Pipelines/data
 ADD img /img
+RUN mkdir /out
+RUN mkdir /usgs
 ADD airflow.cfg /root/airflow/airflow.cfg
 RUN airflow initdb
 

@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+*.pyc
 .Python
 build/
 develop-eggs/
@@ -104,3 +105,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# dags
+dags/
