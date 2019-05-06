@@ -45,18 +45,13 @@ class TestGeneratorFunctions( unittest.TestCase ):
 
 
     # Function tests
-    def test_generate( self ):
-        self.assertEqual( "test", "test" )
-        self.assertNotEqual( "test", "fail" )
-
-
     def test_get_commands_from_json( self ):
-        dag_json = {"mission": "test", "output":"default", "images": "test.img", }
-        self.assertEqual( "test", "test" )
+        dag_json = {"mission":"galileo_ssi_edr","tasks":[["gllssi2isis",[["from","default"]]]],"output":"default","images":[],"sources":["http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.img"],"filename":"2019_04_16_02_00_50"}
+        commands = generator.get_commands_from_json( dag_json )[0]
+        test_commands = ["cd /img && wget http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.img", "cd /img && wget http://pdsimage.wr.usgs.gov/Missions/Galileo/SSI/go_0020/e14/europa/c044094/9842r.lbl", "gllssi2isis from=/img/9842r.lbl"]
 
-    def test_generate_dag( self ):
-        self.assertEqual( "test", "test" )
-        self.assertNotEqual( "test", "fail" )
+        for index in range( len( commands ) ):
+            self.assertEqual( str(commands[index].command), test_commands[index] )
 
 
 
